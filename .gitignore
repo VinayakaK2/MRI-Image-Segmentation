@@ -1,0 +1,47 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Data and Checkpoints
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.npy
+data/processed/*.npz
+data/processed/*.h5
+data/processed/*.pt
+checkpoints/*
+!checkpoints/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.nii.gz
+*.nii
+*.zip
+*.tar.gz
+experiments/*
+!experiments/.gitkeep
+reports/*.png
+reports/*.pdf
+!reports/.gitkeep
+!reports/*.json
+!reports/*.md
+
+# IDE and OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

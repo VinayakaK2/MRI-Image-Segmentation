@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "cohort": "ACDC Primary Training Cohort (ED Phase)",
+  "random_seed": 42,
+  "splits_file": "data/splits/acdc_patient_splits.json",
+  "slice_manifest_file": "data/processed/acdc_slice_manifest.json",
+  "summary": {
+    "total_patients": 100,
+    "total_ed_volumes": 100,
+    "total_2d_slices": 951,
+    "patient_distribution": {
+      "train": 70,
+      "val": 15,
+      "test": 15
+    },
+    "slice_distribution": {
+      "train": 678,
+      "val": 142,
+      "test": 131
+    },
+    "foreground_slice_distribution": {
+      "train": 670,
+      "val": 140,
+      "test": 130
+    },
+    "pathology_distribution_by_split": {
+      "train": {
+        "DCM": 14,
+        "HCM": 14,
+        "MINF": 14,
+        "NOR": 14,
+        "RV": 14
+      },
+      "val": {
+        "DCM": 3,
+        "HCM": 3,
+        "MINF": 3,
+        "NOR": 3,
+        "RV": 3
+      },
+      "test": {
+        "DCM": 3,
+        "HCM": 3,
+        "MINF": 3,
+        "NOR": 3,
+        "RV": 3
+      }
+    }
+  }
+}

@@ -1,0 +1,3898 @@
+{
+  "status": "PASS",
+  "training": {
+    "total_patients": 100,
+    "patients": {
+      "patient001": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient002": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          232,
+          256,
+          10
+        ],
+        "es_shape": [
+          232,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient003": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 15,
+        "ed_shape": [
+          256,
+          256,
+          10
+        ],
+        "es_shape": [
+          256,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient004": {
+        "group": "DCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 15,
+        "ed_shape": [
+          232,
+          256,
+          10
+        ],
+        "es_shape": [
+          232,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient005": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          256,
+          216,
+          10
+        ],
+        "es_shape": [
+          256,
+          216,
+          10
+        ],
+        "voxel_spacing": [
+          1.40625,
+          1.40625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient006": {
+        "group": "DCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 16,
+        "ed_shape": [
+          232,
+          256,
+          11
+        ],
+        "es_shape": [
+          232,
+          256,
+          11
+        ],
+        "voxel_spacing": [
+          1.7578125,
+          1.7578125,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient007": {
+        "group": "DCM",
+        "nb_frame": 16,
+        "ed_frame": 1,
+        "es_frame": 7,
+        "ed_shape": [
+          222,
+          224,
+          10
+        ],
+        "es_shape": [
+          222,
+          224,
+          10
+        ],
+        "voxel_spacing": [
+          1.875,
+          1.875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient008": {
+        "group": "DCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          200,
+          256,
+          10
+        ],
+        "es_shape": [
+          200,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient009": {
+        "group": "DCM",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          208,
+          256,
+          10
+        ],
+        "es_shape": [
+          208,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient010": {
+        "group": "DCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          208,
+          256,
+          10
+        ],
+        "es_shape": [
+          208,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient011": {
+        "group": "DCM",
+        "nb_frame": 15,
+        "ed_frame": 1,
+        "es_frame": 8,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.4843800067901611,
+          1.4843800067901611,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient012": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          184,
+          256,
+          10
+        ],
+        "es_shape": [
+          184,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient013": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 14,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.4453099966049194,
+          1.4453099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient014": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          256,
+          216,
+          10
+        ],
+        "es_shape": [
+          256,
+          216,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient015": {
+        "group": "DCM",
+        "nb_frame": 21,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          256,
+          216,
+          9
+        ],
+        "es_shape": [
+          256,
+          216,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient016": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          192,
+          256,
+          10
+        ],
+        "es_shape": [
+          192,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.4453099966049194,
+          1.4453099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient017": {
+        "group": "DCM",
+        "nb_frame": 19,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient018": {
+        "group": "DCM",
+        "nb_frame": 13,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient019": {
+        "group": "DCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          216,
+          256,
+          11
+        ],
+        "es_shape": [
+          216,
+          256,
+          11
+        ],
+        "voxel_spacing": [
+          1.4453099966049194,
+          1.4453099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient020": {
+        "group": "DCM",
+        "nb_frame": 20,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          208,
+          256,
+          8
+        ],
+        "es_shape": [
+          208,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.7578099966049194,
+          1.7578099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient021": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          240,
+          256,
+          10
+        ],
+        "es_shape": [
+          240,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.6796875,
+          1.6796875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient022": {
+        "group": "HCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          200,
+          256,
+          7
+        ],
+        "es_shape": [
+          200,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.40625,
+          1.40625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient023": {
+        "group": "HCM",
+        "nb_frame": 25,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.4453125,
+          1.4453125,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient024": {
+        "group": "HCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          208,
+          256,
+          8
+        ],
+        "es_shape": [
+          208,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient025": {
+        "group": "HCM",
+        "nb_frame": 25,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          256,
+          256,
+          9
+        ],
+        "es_shape": [
+          256,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient026": {
+        "group": "HCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient027": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient028": {
+        "group": "HCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          224,
+          256,
+          10
+        ],
+        "es_shape": [
+          224,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient029": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          192,
+          256,
+          11
+        ],
+        "es_shape": [
+          192,
+          256,
+          11
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient030": {
+        "group": "HCM",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.4453125,
+          1.4453125,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient031": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.484375,
+          1.484375,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient032": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          240,
+          256,
+          10
+        ],
+        "es_shape": [
+          240,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient033": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 14,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient034": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 16,
+        "ed_shape": [
+          224,
+          256,
+          10
+        ],
+        "es_shape": [
+          224,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient035": {
+        "group": "HCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          208,
+          256,
+          13
+        ],
+        "es_shape": [
+          208,
+          256,
+          13
+        ],
+        "voxel_spacing": [
+          1.6796900033950806,
+          1.6796900033950806,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient036": {
+        "group": "HCM",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.4453099966049194,
+          1.4453099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient037": {
+        "group": "HCM",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          7
+        ],
+        "es_shape": [
+          216,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.875,
+          1.875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient038": {
+        "group": "HCM",
+        "nb_frame": 24,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          276,
+          384,
+          8
+        ],
+        "es_shape": [
+          276,
+          384,
+          8
+        ],
+        "voxel_spacing": [
+          0.8333330154418945,
+          0.8333330154418945,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient039": {
+        "group": "HCM",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          208,
+          256,
+          9
+        ],
+        "es_shape": [
+          208,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.6406199932098389,
+          1.6406199932098389,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient040": {
+        "group": "HCM",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          208,
+          256,
+          10
+        ],
+        "es_shape": [
+          208,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.4843800067901611,
+          1.4843800067901611,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient041": {
+        "group": "MINF",
+        "nb_frame": 17,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          154,
+          224,
+          6
+        ],
+        "es_shape": [
+          154,
+          224,
+          6
+        ],
+        "voxel_spacing": [
+          1.7857099771499634,
+          1.7857099771499634,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient042": {
+        "group": "MINF",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 16,
+        "ed_shape": [
+          232,
+          256,
+          9
+        ],
+        "es_shape": [
+          232,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.7578125,
+          1.7578125,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient043": {
+        "group": "MINF",
+        "nb_frame": 13,
+        "ed_frame": 1,
+        "es_frame": 7,
+        "ed_shape": [
+          174,
+          224,
+          12
+        ],
+        "es_shape": [
+          174,
+          224,
+          12
+        ],
+        "voxel_spacing": [
+          1.9196399450302124,
+          1.9196399450302124,
+          6.5
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient044": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          256,
+          216,
+          9
+        ],
+        "es_shape": [
+          256,
+          216,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient045": {
+        "group": "MINF",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          208,
+          256,
+          8
+        ],
+        "es_shape": [
+          208,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient046": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          256,
+          216,
+          9
+        ],
+        "es_shape": [
+          256,
+          216,
+          9
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient047": {
+        "group": "MINF",
+        "nb_frame": 22,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          256,
+          208,
+          9
+        ],
+        "es_shape": [
+          256,
+          208,
+          9
+        ],
+        "voxel_spacing": [
+          1.6796900033950806,
+          1.6796900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient048": {
+        "group": "MINF",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 8,
+        "ed_shape": [
+          208,
+          256,
+          8
+        ],
+        "es_shape": [
+          208,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient049": {
+        "group": "MINF",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          256,
+          216,
+          7
+        ],
+        "es_shape": [
+          256,
+          216,
+          7
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient050": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          248,
+          256,
+          10
+        ],
+        "es_shape": [
+          248,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient051": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          224,
+          256,
+          10
+        ],
+        "es_shape": [
+          224,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.6406199932098389,
+          1.6406199932098389,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient052": {
+        "group": "MINF",
+        "nb_frame": 20,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.4843800067901611,
+          1.4843800067901611,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient053": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          7
+        ],
+        "es_shape": [
+          216,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient054": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.4843800067901611,
+          1.4843800067901611,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient055": {
+        "group": "MINF",
+        "nb_frame": 25,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          256,
+          216,
+          9
+        ],
+        "es_shape": [
+          256,
+          216,
+          9
+        ],
+        "voxel_spacing": [
+          1.4843800067901611,
+          1.4843800067901611,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient056": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient057": {
+        "group": "MINF",
+        "nb_frame": 25,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          428,
+          512,
+          8
+        ],
+        "es_shape": [
+          428,
+          512,
+          8
+        ],
+        "voxel_spacing": [
+          0.703125,
+          0.703125,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient058": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 14,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.40625,
+          1.40625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient059": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          256,
+          216,
+          9
+        ],
+        "es_shape": [
+          256,
+          216,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient060": {
+        "group": "MINF",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 14,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient061": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient062": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          256,
+          216,
+          10
+        ],
+        "es_shape": [
+          256,
+          216,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient063": {
+        "group": "NOR",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 16,
+        "ed_shape": [
+          256,
+          176,
+          8
+        ],
+        "es_shape": [
+          256,
+          176,
+          8
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient064": {
+        "group": "NOR",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          10
+        ],
+        "es_shape": [
+          216,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.4453125,
+          1.4453125,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient065": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 14,
+        "ed_shape": [
+          210,
+          224,
+          8
+        ],
+        "es_shape": [
+          210,
+          224,
+          8
+        ],
+        "voxel_spacing": [
+          1.875,
+          1.875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient066": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          240,
+          256,
+          9
+        ],
+        "es_shape": [
+          240,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient067": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          256,
+          216,
+          10
+        ],
+        "es_shape": [
+          256,
+          216,
+          10
+        ],
+        "voxel_spacing": [
+          1.3671875,
+          1.3671875,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient068": {
+        "group": "NOR",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          256,
+          208,
+          7
+        ],
+        "es_shape": [
+          256,
+          208,
+          7
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient069": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          216,
+          256,
+          7
+        ],
+        "es_shape": [
+          216,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient070": {
+        "group": "NOR",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          208,
+          256,
+          6
+        ],
+        "es_shape": [
+          208,
+          256,
+          6
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient071": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          192,
+          256,
+          10
+        ],
+        "es_shape": [
+          192,
+          256,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient072": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient073": {
+        "group": "NOR",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          208,
+          256,
+          7
+        ],
+        "es_shape": [
+          208,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.640625,
+          1.640625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient074": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          256,
+          256,
+          8
+        ],
+        "es_shape": [
+          256,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient075": {
+        "group": "NOR",
+        "nb_frame": 14,
+        "ed_frame": 1,
+        "es_frame": 6,
+        "ed_shape": [
+          168,
+          224,
+          14
+        ],
+        "es_shape": [
+          168,
+          224,
+          14
+        ],
+        "voxel_spacing": [
+          1.7857099771499634,
+          1.7857099771499634,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient076": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          256,
+          256,
+          8
+        ],
+        "es_shape": [
+          256,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient077": {
+        "group": "NOR",
+        "nb_frame": 25,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          214,
+          256,
+          8
+        ],
+        "es_shape": [
+          214,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.40625,
+          1.40625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient078": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient079": {
+        "group": "NOR",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          216,
+          256,
+          9
+        ],
+        "es_shape": [
+          216,
+          256,
+          9
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient080": {
+        "group": "NOR",
+        "nb_frame": 21,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          216,
+          256,
+          6
+        ],
+        "es_shape": [
+          216,
+          256,
+          6
+        ],
+        "voxel_spacing": [
+          1.7578099966049194,
+          1.7578099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient081": {
+        "group": "RV",
+        "nb_frame": 16,
+        "ed_frame": 1,
+        "es_frame": 7,
+        "ed_shape": [
+          154,
+          224,
+          17
+        ],
+        "es_shape": [
+          154,
+          224,
+          17
+        ],
+        "voxel_spacing": [
+          1.6517900228500366,
+          1.6517900228500366,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient082": {
+        "group": "RV",
+        "nb_frame": 17,
+        "ed_frame": 1,
+        "es_frame": 7,
+        "ed_shape": [
+          224,
+          154,
+          16
+        ],
+        "es_shape": [
+          224,
+          154,
+          16
+        ],
+        "voxel_spacing": [
+          1.7857099771499634,
+          1.7857099771499634,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient083": {
+        "group": "RV",
+        "nb_frame": 17,
+        "ed_frame": 1,
+        "es_frame": 8,
+        "ed_shape": [
+          208,
+          256,
+          6
+        ],
+        "es_shape": [
+          208,
+          256,
+          6
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient084": {
+        "group": "RV",
+        "nb_frame": 35,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          208,
+          256,
+          12
+        ],
+        "es_shape": [
+          208,
+          256,
+          12
+        ],
+        "voxel_spacing": [
+          1.3671900033950806,
+          1.3671900033950806,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient085": {
+        "group": "RV",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          184,
+          288,
+          15
+        ],
+        "es_shape": [
+          184,
+          288,
+          15
+        ],
+        "voxel_spacing": [
+          1.2152800559997559,
+          1.2152800559997559,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient086": {
+        "group": "RV",
+        "nb_frame": 19,
+        "ed_frame": 1,
+        "es_frame": 8,
+        "ed_shape": [
+          192,
+          256,
+          7
+        ],
+        "es_shape": [
+          192,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient087": {
+        "group": "RV",
+        "nb_frame": 28,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          256,
+          184,
+          8
+        ],
+        "es_shape": [
+          256,
+          184,
+          8
+        ],
+        "voxel_spacing": [
+          1.4453099966049194,
+          1.4453099966049194,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient088": {
+        "group": "RV",
+        "nb_frame": 25,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          224,
+          154,
+          16
+        ],
+        "es_shape": [
+          224,
+          154,
+          16
+        ],
+        "voxel_spacing": [
+          1.6517900228500366,
+          1.6517900228500366,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient089": {
+        "group": "RV",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 10,
+        "ed_shape": [
+          264,
+          288,
+          6
+        ],
+        "es_shape": [
+          264,
+          288,
+          6
+        ],
+        "voxel_spacing": [
+          1.4583300352096558,
+          1.4583300352096558,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient090": {
+        "group": "RV",
+        "nb_frame": 12,
+        "ed_frame": 4,
+        "es_frame": 11,
+        "ed_shape": [
+          154,
+          224,
+          7
+        ],
+        "es_shape": [
+          154,
+          224,
+          7
+        ],
+        "voxel_spacing": [
+          1.7857099771499634,
+          1.7857099771499634,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient091": {
+        "group": "RV",
+        "nb_frame": 16,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          180,
+          224,
+          8
+        ],
+        "es_shape": [
+          180,
+          224,
+          8
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient092": {
+        "group": "RV",
+        "nb_frame": 15,
+        "ed_frame": 1,
+        "es_frame": 6,
+        "ed_shape": [
+          174,
+          208,
+          15
+        ],
+        "es_shape": [
+          174,
+          208,
+          15
+        ],
+        "voxel_spacing": [
+          1.6826900243759155,
+          1.6826900243759155,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient093": {
+        "group": "RV",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 14,
+        "ed_shape": [
+          180,
+          224,
+          10
+        ],
+        "es_shape": [
+          180,
+          224,
+          10
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          7.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient094": {
+        "group": "RV",
+        "nb_frame": 14,
+        "ed_frame": 1,
+        "es_frame": 7,
+        "ed_shape": [
+          208,
+          174,
+          10
+        ],
+        "es_shape": [
+          208,
+          174,
+          10
+        ],
+        "voxel_spacing": [
+          1.6826900243759155,
+          1.6826900243759155,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient095": {
+        "group": "RV",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 12,
+        "ed_shape": [
+          180,
+          224,
+          14
+        ],
+        "es_shape": [
+          180,
+          224,
+          14
+        ],
+        "voxel_spacing": [
+          1.5625,
+          1.5625,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient096": {
+        "group": "RV",
+        "nb_frame": 15,
+        "ed_frame": 1,
+        "es_frame": 8,
+        "ed_shape": [
+          174,
+          208,
+          18
+        ],
+        "es_shape": [
+          174,
+          208,
+          18
+        ],
+        "voxel_spacing": [
+          1.6826900243759155,
+          1.6826900243759155,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient097": {
+        "group": "RV",
+        "nb_frame": 30,
+        "ed_frame": 1,
+        "es_frame": 11,
+        "ed_shape": [
+          216,
+          256,
+          8
+        ],
+        "es_shape": [
+          216,
+          256,
+          8
+        ],
+        "voxel_spacing": [
+          1.4843800067901611,
+          1.4843800067901611,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient098": {
+        "group": "RV",
+        "nb_frame": 22,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          216,
+          256,
+          7
+        ],
+        "es_shape": [
+          216,
+          256,
+          7
+        ],
+        "voxel_spacing": [
+          1.25,
+          1.25,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient099": {
+        "group": "RV",
+        "nb_frame": 19,
+        "ed_frame": 1,
+        "es_frame": 9,
+        "ed_shape": [
+          154,
+          224,
+          16
+        ],
+        "es_shape": [
+          154,
+          224,
+          16
+        ],
+        "voxel_spacing": [
+          1.7857099771499634,
+          1.7857099771499634,
+          5.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "patient100": {
+        "group": "RV",
+        "nb_frame": 34,
+        "ed_frame": 1,
+        "es_frame": 13,
+        "ed_shape": [
+          216,
+          304,
+          8
+        ],
+        "es_shape": [
+          216,
+          304,
+          8
+        ],
+        "voxel_spacing": [
+          1.315790057182312,
+          1.315790057182312,
+          10.0
+        ],
+        "ed_labels": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "es_labels": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    "label_values_found": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "errors": []
+  },
+  "testing": {
+    "total_patients": 50,
+    "patients": {
+      "patient101": {
+        "files_count": 7,
+        "gt_files": [
+          "patient101_frame01_gt.nii.gz",
+          "patient101_frame14_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 14
+      },
+      "patient102": {
+        "files_count": 7,
+        "gt_files": [
+          "patient102_frame13_gt.nii.gz",
+          "patient102_frame01_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 13
+      },
+      "patient103": {
+        "files_count": 7,
+        "gt_files": [
+          "patient103_frame11_gt.nii.gz",
+          "patient103_frame01_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient104": {
+        "files_count": 7,
+        "gt_files": [
+          "patient104_frame11_gt.nii.gz",
+          "patient104_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient105": {
+        "files_count": 7,
+        "gt_files": [
+          "patient105_frame10_gt.nii.gz",
+          "patient105_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient106": {
+        "files_count": 7,
+        "gt_files": [
+          "patient106_frame01_gt.nii.gz",
+          "patient106_frame13_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 13
+      },
+      "patient107": {
+        "files_count": 7,
+        "gt_files": [
+          "patient107_frame01_gt.nii.gz",
+          "patient107_frame10_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient108": {
+        "files_count": 7,
+        "gt_files": [
+          "patient108_frame09_gt.nii.gz",
+          "patient108_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient109": {
+        "files_count": 7,
+        "gt_files": [
+          "patient109_frame01_gt.nii.gz",
+          "patient109_frame10_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient110": {
+        "files_count": 7,
+        "gt_files": [
+          "patient110_frame01_gt.nii.gz",
+          "patient110_frame11_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient111": {
+        "files_count": 7,
+        "gt_files": [
+          "patient111_frame01_gt.nii.gz",
+          "patient111_frame07_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 7
+      },
+      "patient112": {
+        "files_count": 7,
+        "gt_files": [
+          "patient112_frame01_gt.nii.gz",
+          "patient112_frame12_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 12
+      },
+      "patient113": {
+        "files_count": 7,
+        "gt_files": [
+          "patient113_frame01_gt.nii.gz",
+          "patient113_frame08_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 8
+      },
+      "patient114": {
+        "files_count": 7,
+        "gt_files": [
+          "patient114_frame11_gt.nii.gz",
+          "patient114_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient115": {
+        "files_count": 7,
+        "gt_files": [
+          "patient115_frame01_gt.nii.gz",
+          "patient115_frame13_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 13
+      },
+      "patient116": {
+        "files_count": 7,
+        "gt_files": [
+          "patient116_frame09_gt.nii.gz",
+          "patient116_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient117": {
+        "files_count": 7,
+        "gt_files": [
+          "patient117_frame01_gt.nii.gz",
+          "patient117_frame13_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 13
+      },
+      "patient118": {
+        "files_count": 7,
+        "gt_files": [
+          "patient118_frame10_gt.nii.gz",
+          "patient118_frame01_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient119": {
+        "files_count": 7,
+        "gt_files": [
+          "patient119_frame01_gt.nii.gz",
+          "patient119_frame09_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient120": {
+        "files_count": 7,
+        "gt_files": [
+          "patient120_frame01_gt.nii.gz",
+          "patient120_frame08_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 8
+      },
+      "patient121": {
+        "files_count": 7,
+        "gt_files": [
+          "patient121_frame10_gt.nii.gz",
+          "patient121_frame01_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient122": {
+        "files_count": 7,
+        "gt_files": [
+          "patient122_frame06_gt.nii.gz",
+          "patient122_frame01_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 6
+      },
+      "patient123": {
+        "files_count": 7,
+        "gt_files": [
+          "patient123_frame11_gt.nii.gz",
+          "patient123_frame01_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient124": {
+        "files_count": 7,
+        "gt_files": [
+          "patient124_frame07_gt.nii.gz",
+          "patient124_frame01_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 7
+      },
+      "patient125": {
+        "files_count": 7,
+        "gt_files": [
+          "patient125_frame07_gt.nii.gz",
+          "patient125_frame01_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 7
+      },
+      "patient126": {
+        "files_count": 7,
+        "gt_files": [
+          "patient126_frame07_gt.nii.gz",
+          "patient126_frame01_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 7
+      },
+      "patient127": {
+        "files_count": 7,
+        "gt_files": [
+          "patient127_frame07_gt.nii.gz",
+          "patient127_frame01_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 7
+      },
+      "patient128": {
+        "files_count": 7,
+        "gt_files": [
+          "patient128_frame11_gt.nii.gz",
+          "patient128_frame01_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient129": {
+        "files_count": 7,
+        "gt_files": [
+          "patient129_frame08_gt.nii.gz",
+          "patient129_frame01_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 8
+      },
+      "patient130": {
+        "files_count": 7,
+        "gt_files": [
+          "patient130_frame01_gt.nii.gz",
+          "patient130_frame11_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient131": {
+        "files_count": 7,
+        "gt_files": [
+          "patient131_frame01_gt.nii.gz",
+          "patient131_frame09_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient132": {
+        "files_count": 7,
+        "gt_files": [
+          "patient132_frame15_gt.nii.gz",
+          "patient132_frame01_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 15
+      },
+      "patient133": {
+        "files_count": 7,
+        "gt_files": [
+          "patient133_frame10_gt.nii.gz",
+          "patient133_frame01_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient134": {
+        "files_count": 7,
+        "gt_files": [
+          "patient134_frame01_gt.nii.gz",
+          "patient134_frame15_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 15
+      },
+      "patient135": {
+        "files_count": 7,
+        "gt_files": [
+          "patient135_frame01_gt.nii.gz",
+          "patient135_frame10_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient136": {
+        "files_count": 7,
+        "gt_files": [
+          "patient136_frame12_gt.nii.gz",
+          "patient136_frame01_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 12
+      },
+      "patient137": {
+        "files_count": 7,
+        "gt_files": [
+          "patient137_frame11_gt.nii.gz",
+          "patient137_frame01_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient138": {
+        "files_count": 7,
+        "gt_files": [
+          "patient138_frame10_gt.nii.gz",
+          "patient138_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient139": {
+        "files_count": 7,
+        "gt_files": [
+          "patient139_frame01_gt.nii.gz",
+          "patient139_frame08_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 8
+      },
+      "patient140": {
+        "files_count": 7,
+        "gt_files": [
+          "patient140_frame01_gt.nii.gz",
+          "patient140_frame09_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient141": {
+        "files_count": 7,
+        "gt_files": [
+          "patient141_frame11_gt.nii.gz",
+          "patient141_frame01_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 11
+      },
+      "patient142": {
+        "files_count": 7,
+        "gt_files": [
+          "patient142_frame01_gt.nii.gz",
+          "patient142_frame12_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 12
+      },
+      "patient143": {
+        "files_count": 7,
+        "gt_files": [
+          "patient143_frame12_gt.nii.gz",
+          "patient143_frame01_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 12
+      },
+      "patient144": {
+        "files_count": 7,
+        "gt_files": [
+          "patient144_frame01_gt.nii.gz",
+          "patient144_frame09_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient145": {
+        "files_count": 7,
+        "gt_files": [
+          "patient145_frame01_gt.nii.gz",
+          "patient145_frame13_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 13
+      },
+      "patient146": {
+        "files_count": 7,
+        "gt_files": [
+          "patient146_frame10_gt.nii.gz",
+          "patient146_frame01_gt.nii.gz"
+        ],
+        "group": "HCM",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient147": {
+        "files_count": 7,
+        "gt_files": [
+          "patient147_frame01_gt.nii.gz",
+          "patient147_frame09_gt.nii.gz"
+        ],
+        "group": "RV",
+        "ed_frame": 1,
+        "es_frame": 9
+      },
+      "patient148": {
+        "files_count": 7,
+        "gt_files": [
+          "patient148_frame10_gt.nii.gz",
+          "patient148_frame01_gt.nii.gz"
+        ],
+        "group": "MINF",
+        "ed_frame": 1,
+        "es_frame": 10
+      },
+      "patient149": {
+        "files_count": 7,
+        "gt_files": [
+          "patient149_frame01_gt.nii.gz",
+          "patient149_frame12_gt.nii.gz"
+        ],
+        "group": "DCM",
+        "ed_frame": 1,
+        "es_frame": 12
+      },
+      "patient150": {
+        "files_count": 7,
+        "gt_files": [
+          "patient150_frame01_gt.nii.gz",
+          "patient150_frame12_gt.nii.gz"
+        ],
+        "group": "NOR",
+        "ed_frame": 1,
+        "es_frame": 12
+      }
+    },
+    "has_ground_truth": true,
+    "errors": [],
+    "gt_count": 50
+  },
+  "summary": {
+    "groups_distribution": {
+      "DCM": 20,
+      "HCM": 20,
+      "MINF": 20,
+      "NOR": 20,
+      "RV": 20
+    },
+    "spatial_shapes": [
+      "(154, 224, 16)",
+      "(154, 224, 17)",
+      "(154, 224, 6)",
+      "(154, 224, 7)",
+      "(168, 224, 14)",
+      "(174, 208, 15)",
+      "(174, 208, 18)",
+      "(174, 224, 12)",
+      "(180, 224, 10)",
+      "(180, 224, 14)",
+      "(180, 224, 8)",
+      "(184, 256, 10)",
+      "(184, 288, 15)",
+      "(192, 256, 10)",
+      "(192, 256, 11)",
+      "(192, 256, 7)",
+      "(200, 256, 10)",
+      "(200, 256, 7)",
+      "(208, 174, 10)",
+      "(208, 256, 10)",
+      "(208, 256, 12)",
+      "(208, 256, 13)",
+      "(208, 256, 6)",
+      "(208, 256, 7)",
+      "(208, 256, 8)",
+      "(208, 256, 9)",
+      "(210, 224, 8)",
+      "(214, 256, 8)",
+      "(216, 256, 10)",
+      "(216, 256, 11)",
+      "(216, 256, 6)",
+      "(216, 256, 7)",
+      "(216, 256, 8)",
+      "(216, 256, 9)",
+      "(216, 304, 8)",
+      "(222, 224, 10)",
+      "(224, 154, 16)",
+      "(224, 256, 10)",
+      "(232, 256, 10)",
+      "(232, 256, 11)",
+      "(232, 256, 9)",
+      "(240, 256, 10)",
+      "(240, 256, 9)",
+      "(248, 256, 10)",
+      "(256, 176, 8)",
+      "(256, 184, 8)",
+      "(256, 208, 7)",
+      "(256, 208, 9)",
+      "(256, 216, 10)",
+      "(256, 216, 7)",
+      "(256, 216, 9)",
+      "(256, 256, 10)",
+      "(256, 256, 8)",
+      "(256, 256, 9)",
+      "(264, 288, 6)",
+      "(276, 384, 8)",
+      "(428, 512, 8)"
+    ],
+    "num_classes": 4,
+    "class_mapping": {
+      "0": "background",
+      "1": "right_ventricle",
+      "2": "myocardium",
+      "3": "left_ventricle"
+    }
+  }
+}
