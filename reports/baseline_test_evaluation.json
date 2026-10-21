@@ -1,0 +1,154 @@
+{
+  "model_architecture": "LightweightUNet2D",
+  "parameters": {
+    "total": 1963860,
+    "trainable": 1963860
+  },
+  "best_epoch": 3,
+  "best_val_foreground_dice": 0.688361747318557,
+  "test_metrics": {
+    "dice_background": 0.992398313841207,
+    "iou_background": 0.9850958214952541,
+    "dice_rv": 0.6169522703522309,
+    "iou_rv": 0.5252425033204418,
+    "dice_myo": 0.5909199386069561,
+    "iou_myo": 0.4513129287357119,
+    "dice_lv": 0.7906449873938416,
+    "iou_lv": 0.7019955812878572,
+    "mean_dice_foreground": 0.6661723987843429,
+    "mean_iou_foreground": 0.5595170044480036,
+    "mean_dice_all": 0.7477288775485591,
+    "mean_iou_all": 0.6659117087098163
+  },
+  "config": {
+    "project": {
+      "name": "cardiac_mri_segmentation_robustness",
+      "description": "Robustness evaluation of lightweight 2D U-Net under controlled image degradation",
+      "seed": 42,
+      "deterministic": true,
+      "device": "auto"
+    },
+    "dataset": {
+      "name": "ACDC",
+      "raw_dir": "data/raw/ACDC",
+      "processed_dir": "data/processed/ACDC",
+      "modalities": [
+        "short_axis_cine_mri"
+      ],
+      "phases": [
+        "ED",
+        "ES"
+      ],
+      "num_classes": 4,
+      "class_labels": {
+        "0": "background",
+        "1": "right_ventricle",
+        "2": "myocardium",
+        "3": "left_ventricle"
+      },
+      "target_spatial_size": [
+        256,
+        256
+      ],
+      "patient_split": {
+        "train_ratio": 0.7,
+        "val_ratio": 0.15,
+        "test_ratio": 0.15,
+        "stratify_by_group": true
+      }
+    },
+    "model": {
+      "architecture": "LightweightUNet2D",
+      "in_channels": 1,
+      "num_classes": 4,
+      "base_channels": 16,
+      "depth": 4,
+      "dropout": 0.1,
+      "use_batchnorm": true,
+      "bilinear_upsample": true
+    },
+    "training": {
+      "batch_size": 16,
+      "epochs": 50,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "optimizer": "AdamW",
+      "loss_function": "DiceCELoss",
+      "lr_scheduler": "CosineAnnealingLR",
+      "min_lr": 1e-05,
+      "early_stopping_patience": 10,
+      "mixed_precision": false,
+      "checkpoint_dir": "checkpoints",
+      "save_best_only": true
+    },
+    "evaluation": {
+      "metrics": [
+        "dice_per_class",
+        "mean_dice",
+        "iou",
+        "hd95"
+      ],
+      "eval_batch_size": 1,
+      "report_dir": "reports",
+      "export_predictions": false
+    },
+    "corruptions": {
+      "families": [
+        {
+          "name": "gaussian_noise",
+          "type": "additive_noise",
+          "levels": {
+            "mild": 0.02,
+            "moderate": 0.05,
+            "severe": 0.1
+          }
+        },
+        {
+          "name": "gaussian_blur",
+          "type": "spatial_blur",
+          "levels": {
+            "mild": 0.75,
+            "moderate": 1.5,
+            "severe": 2.5
+          }
+        },
+        {
+          "name": "contrast_reduction",
+          "type": "intensity_scaling",
+          "levels": {
+            "mild": 0.75,
+            "moderate": 0.5,
+            "severe": 0.25
+          }
+        }
+      ]
+    },
+    "preprocessing": {
+      "baseline": {
+        "normalization": "z_score",
+        "clip_percentiles": [
+          0.5,
+          99.5
+        ]
+      },
+      "interventions": {
+        "denoising_filters": [
+          "gaussian",
+          "median"
+        ],
+        "contrast_enhancement": [
+          "clahe",
+          "histogram_equalization"
+        ]
+      }
+    },
+    "postprocessing": {
+      "baseline": "argmax",
+      "interventions": {
+        "largest_connected_component": true,
+        "hole_filling": true,
+        "min_component_size_pixels": 50
+      }
+    }
+  }
+}

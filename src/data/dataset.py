@@ -26,12 +26,15 @@ class ACDCSliceDataset(Dataset):
         normalization_method: str = "z_score",
         clip_percentiles: Optional[Tuple[float, float]] = (0.5, 99.5),
         foreground_only: bool = False,
+        cache_data: bool = False,
     ) -> None:
         """Initializes the dataset from in-memory records or a persistent JSON manifest."""
         self.target_spatial_size = target_spatial_size
         self.normalization_method = normalization_method
         self.clip_percentiles = clip_percentiles
         self.foreground_only = foreground_only
+        self.cache_data = cache_data
+        self._cache: Dict[int, Tuple[torch.Tensor, torch.Tensor, Dict[str, Any]]] = {}
 
         # Resolve base directory for relative path resolution
         if base_dir is not None:
@@ -87,6 +90,9 @@ class ACDCSliceDataset(Dataset):
         if index < 0 or index >= len(self.records):
             raise IndexError(f"Slice index {index} out of bounds for dataset of length {len(self.records)}")
 
+        if self.cache_data and index in self._cache:
+            return self._cache[index]
+
         rec = self.records[index]
         slice_idx = rec["slice_idx"]
 
@@ -138,7 +144,11 @@ class ACDCSliceDataset(Dataset):
             "label_presence": label_presence,
         }
 
-        return image_tensor, target_tensor, metadata
+        item = (image_tensor, target_tensor, metadata)
+        if self.cache_data:
+            self._cache[index] = item
+
+        return item
 
 
 def acdc_collate_fn(
