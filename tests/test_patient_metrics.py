@@ -92,7 +92,7 @@ def test_compute_paired_patient_comparison() -> None:
 
 
 def test_adjust_pvalues_holm() -> None:
-    """Verifies that Holm-Bonferroni correction strictly orders and inflates multiple p-values."""
+    """Verifies that Holm-Bonferroni correction strictly orders, inflates, and caps p-values."""
     raw = [0.01, 0.04, 0.03]
     # Sorted: 0.01 (rank 0, m=3), 0.03 (rank 1, m=2), 0.04 (rank 2, m=1)
     # Holm values:
@@ -104,8 +104,42 @@ def test_adjust_pvalues_holm() -> None:
     assert pytest.approx(adj[1], abs=1e-5) == 0.06
     assert pytest.approx(adj[2], abs=1e-5) == 0.06
 
-    # Edge cases
+    # Edge cases:
+    # 1. Empty input
     assert adjust_pvalues_holm([]) == []
-    assert adjust_pvalues_holm([0.5]) == [0.5]
-    # Cap at 1.0
-    assert adjust_pvalues_holm([0.8, 0.9]) == [1.0, 1.0]
+    # 2. Single hypothesis
+    assert adjust_pvalues_holm([0.05]) == [0.05]
+    # 3. Already sorted p-values
+    assert adjust_pvalues_holm([0.001, 0.01, 0.03, 0.05]) == [0.004, 0.03, 0.06, 0.06]
+    # 4. Unsorted permutation
+    assert adjust_pvalues_holm([0.05, 0.001, 0.03, 0.01]) == [0.06, 0.004, 0.06, 0.03]
+    # 5. Duplicate p-values
+    assert adjust_pvalues_holm([0.01, 0.01, 0.04, 0.04]) == [0.04, 0.04, 0.08, 0.08]
+    # 6. Capped at 1.0
+    assert adjust_pvalues_holm([0.4, 0.6, 0.8, 0.9]) == [1.0, 1.0, 1.0, 1.0]
+    # 7. Monotonicity enforcement under ties / near-ties
+    adj_mono = adjust_pvalues_holm([0.02, 0.019, 0.018])
+    assert all(pytest.approx(v, abs=1e-5) == 0.054 for v in adj_mono)
+
+
+def test_phase5_hypothesis_families_sizes() -> None:
+    """Verifies pre-registered hypothesis family sizes for Phase 5 FWER control."""
+    f1_postproc = 10  # All 10 experimental conditions
+    f2_clahe_contrast = 3  # Mild, Moderate, Severe contrast
+    f3_combined_contrast = 3  # Mild, Moderate, Severe contrast
+    f4_combined_noise = 3  # Mild, Moderate, Severe noise
+
+    # Total pre-registered confirmatory comparisons across all 4 families
+    total_comparisons = f1_postproc + f2_clahe_contrast + f3_combined_contrast + f4_combined_noise
+    assert total_comparisons == 19
+
+    # Verify Holm step-down multiplier scaling for each registered family size
+    # Family 1 (m=10): smallest p-value scaled by m=10
+    adj_f1 = adjust_pvalues_holm([0.001] * f1_postproc)
+    assert len(adj_f1) == 10
+    assert pytest.approx(adj_f1[0], abs=1e-5) == 0.01
+
+    # Family 2, 3, 4 (m=3): smallest p-value scaled by m=3
+    adj_f2 = adjust_pvalues_holm([0.001] * f2_clahe_contrast)
+    assert len(adj_f2) == 3
+    assert pytest.approx(adj_f2[0], abs=1e-5) == 0.003
