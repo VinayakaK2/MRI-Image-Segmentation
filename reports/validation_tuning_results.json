@@ -1,0 +1,238 @@
+{
+  "contrast_tuning_severe": {
+    "Unmitigated Corrupted": {
+      "slice_fg_dice": 0.07065532970329112,
+      "patient_3d_fg_dice_mean": 0.03652766341003142,
+      "patient_3d_fg_dice_std": 0.05200468523029147,
+      "patient_3d_rv_dice": 0.004591077174278442,
+      "patient_3d_myo_dice": 0.01262289863046418,
+      "patient_3d_lv_dice": 0.09236901442535163
+    },
+    "Global HE (nbins=256)": {
+      "slice_fg_dice": 0.6510889356620041,
+      "patient_3d_fg_dice_mean": 0.7506810641658986,
+      "patient_3d_fg_dice_std": 0.06833305285248038,
+      "patient_3d_rv_dice": 0.7839636902884395,
+      "patient_3d_myo_dice": 0.6043778324538592,
+      "patient_3d_lv_dice": 0.863701669755397
+    },
+    "Global HE (nbins=128)": {
+      "slice_fg_dice": 0.6550410196857503,
+      "patient_3d_fg_dice_mean": 0.7517283004248017,
+      "patient_3d_fg_dice_std": 0.068493708379692,
+      "patient_3d_rv_dice": 0.7849408199699478,
+      "patient_3d_myo_dice": 0.6052943686269788,
+      "patient_3d_lv_dice": 0.8649497126774787
+    },
+    "CLAHE (clip=0.01, grid=16x16)": {
+      "slice_fg_dice": 0.6949441509846233,
+      "patient_3d_fg_dice_mean": 0.7856780531213925,
+      "patient_3d_fg_dice_std": 0.0430377723599127,
+      "patient_3d_rv_dice": 0.8201777866963902,
+      "patient_3d_myo_dice": 0.6547825326784279,
+      "patient_3d_lv_dice": 0.8820738399893593
+    },
+    "CLAHE (clip=0.02, grid=16x16)": {
+      "slice_fg_dice": 0.6458605513845587,
+      "patient_3d_fg_dice_mean": 0.7188983118450882,
+      "patient_3d_fg_dice_std": 0.08158412734950818,
+      "patient_3d_rv_dice": 0.6849726335600103,
+      "patient_3d_myo_dice": 0.625310147063097,
+      "patient_3d_lv_dice": 0.8464121549121574
+    },
+    "CLAHE (clip=0.04, grid=16x16)": {
+      "slice_fg_dice": 0.4752760798931112,
+      "patient_3d_fg_dice_mean": 0.5115510892462803,
+      "patient_3d_fg_dice_std": 0.15476820738588304,
+      "patient_3d_rv_dice": 0.3744990151555888,
+      "patient_3d_myo_dice": 0.4642613526314948,
+      "patient_3d_lv_dice": 0.6958928999517577
+    },
+    "CLAHE (clip=0.02, grid=8x8)": {
+      "slice_fg_dice": 0.6679265889398449,
+      "patient_3d_fg_dice_mean": 0.7555614802399317,
+      "patient_3d_fg_dice_std": 0.06574008371541236,
+      "patient_3d_rv_dice": 0.7490360480689094,
+      "patient_3d_myo_dice": 0.6539832681350831,
+      "patient_3d_lv_dice": 0.8636651245158027
+    }
+  },
+  "noise_tuning_severe": {
+    "Unmitigated Corrupted": {
+      "slice_fg_dice": 0.6783323088525047,
+      "patient_3d_fg_dice_mean": 0.7724843623807811,
+      "patient_3d_fg_dice_std": 0.04832314007102364,
+      "patient_3d_rv_dice": 0.8156197152839364,
+      "patient_3d_myo_dice": 0.6324482435631562,
+      "patient_3d_lv_dice": 0.8693851282952499
+    },
+    "Gaussian Filter (sigma=0.5)": {
+      "slice_fg_dice": 0.6839642927966272,
+      "patient_3d_fg_dice_mean": 0.773173558738544,
+      "patient_3d_fg_dice_std": 0.0484247407100328,
+      "patient_3d_rv_dice": 0.8177553800770241,
+      "patient_3d_myo_dice": 0.6298727926824911,
+      "patient_3d_lv_dice": 0.871892503456117
+    },
+    "Gaussian Filter (sigma=1.0)": {
+      "slice_fg_dice": 0.6768547039754037,
+      "patient_3d_fg_dice_mean": 0.7661551511291527,
+      "patient_3d_fg_dice_std": 0.05179277634759148,
+      "patient_3d_rv_dice": 0.7931376574189666,
+      "patient_3d_myo_dice": 0.6324956788163179,
+      "patient_3d_lv_dice": 0.8728321171521731
+    },
+    "Gaussian Filter (sigma=1.5)": {
+      "slice_fg_dice": 0.6614752412828556,
+      "patient_3d_fg_dice_mean": 0.7503159719126617,
+      "patient_3d_fg_dice_std": 0.057344344741524736,
+      "patient_3d_rv_dice": 0.7575603471130621,
+      "patient_3d_myo_dice": 0.6255050559940931,
+      "patient_3d_lv_dice": 0.8678825126308302
+    },
+    "Median Filter (size=3)": {
+      "slice_fg_dice": 0.6864549043439842,
+      "patient_3d_fg_dice_mean": 0.7742351751523918,
+      "patient_3d_fg_dice_std": 0.0477010566967075,
+      "patient_3d_rv_dice": 0.8120086491177143,
+      "patient_3d_myo_dice": 0.6364308901958355,
+      "patient_3d_lv_dice": 0.874265986143626
+    },
+    "Median Filter (size=5)": {
+      "slice_fg_dice": 0.676720603701715,
+      "patient_3d_fg_dice_mean": 0.7652625523998042,
+      "patient_3d_fg_dice_std": 0.05115336852409379,
+      "patient_3d_rv_dice": 0.7836093944071062,
+      "patient_3d_myo_dice": 0.6399871158546445,
+      "patient_3d_lv_dice": 0.8721911469376613
+    }
+  },
+  "postprocessing_val": {
+    "Clean Baseline": {
+      "raw": {
+        "slice_fg_dice": 0.6883617473185569,
+        "patient_3d_fg_dice_mean": 0.7791020602926519,
+        "patient_3d_fg_dice_std": 0.0452395977233845,
+        "patient_3d_rv_dice": 0.8260460273055298,
+        "patient_3d_myo_dice": 0.6370908315036203,
+        "patient_3d_lv_dice": 0.8741693220688057
+      },
+      "postprocessed": {
+        "slice_fg_dice": 0.6913423890056117,
+        "patient_3d_fg_dice_mean": 0.7844430051620416,
+        "patient_3d_fg_dice_std": 0.04374157156778651,
+        "patient_3d_rv_dice": 0.8350571182067414,
+        "patient_3d_myo_dice": 0.6427909634013492,
+        "patient_3d_lv_dice": 0.8754809338780346
+      },
+      "delta_patient_dice": 0.00534094486938963
+    },
+    "Gaussian Noise (Severe)": {
+      "raw": {
+        "slice_fg_dice": 0.6783323088525047,
+        "patient_3d_fg_dice_mean": 0.7724843623807811,
+        "patient_3d_fg_dice_std": 0.04832314007102364,
+        "patient_3d_rv_dice": 0.8156197152839364,
+        "patient_3d_myo_dice": 0.6324482435631562,
+        "patient_3d_lv_dice": 0.8693851282952499
+      },
+      "postprocessed": {
+        "slice_fg_dice": 0.6793931052535194,
+        "patient_3d_fg_dice_mean": 0.7770104288037321,
+        "patient_3d_fg_dice_std": 0.044280240162467024,
+        "patient_3d_rv_dice": 0.8240186916796318,
+        "patient_3d_myo_dice": 0.6390384940968741,
+        "patient_3d_lv_dice": 0.8679741006346906
+      },
+      "delta_patient_dice": 0.004526066422950947
+    },
+    "Gaussian Blur (Severe)": {
+      "raw": {
+        "slice_fg_dice": 0.6240286697915216,
+        "patient_3d_fg_dice_mean": 0.7061057792996923,
+        "patient_3d_fg_dice_std": 0.08231082795176754,
+        "patient_3d_rv_dice": 0.6668091448156531,
+        "patient_3d_myo_dice": 0.5991997656303919,
+        "patient_3d_lv_dice": 0.852308427453032
+      },
+      "postprocessed": {
+        "slice_fg_dice": 0.6220408604113048,
+        "patient_3d_fg_dice_mean": 0.707449531937677,
+        "patient_3d_fg_dice_std": 0.08159145637314874,
+        "patient_3d_rv_dice": 0.6707468335695794,
+        "patient_3d_myo_dice": 0.5997680689450671,
+        "patient_3d_lv_dice": 0.8518336932983845
+      },
+      "delta_patient_dice": 0.0013437526379846965
+    },
+    "Contrast Reduction (Mod)": {
+      "raw": {
+        "slice_fg_dice": 0.580312072639229,
+        "patient_3d_fg_dice_mean": 0.6563874815923381,
+        "patient_3d_fg_dice_std": 0.13352864117680457,
+        "patient_3d_rv_dice": 0.6147109047748968,
+        "patient_3d_myo_dice": 0.5505530705999254,
+        "patient_3d_lv_dice": 0.803898469402192
+      },
+      "postprocessed": {
+        "slice_fg_dice": 0.5806780438723175,
+        "patient_3d_fg_dice_mean": 0.6587973415787493,
+        "patient_3d_fg_dice_std": 0.1327286931608015,
+        "patient_3d_rv_dice": 0.6172384896055667,
+        "patient_3d_myo_dice": 0.5544976185865135,
+        "patient_3d_lv_dice": 0.8046559165441678
+      },
+      "delta_patient_dice": 0.002409859986411189
+    }
+  },
+  "clean_side_effects": {
+    "Clean Baseline (No Preproc)": {
+      "slice_fg_dice": 0.6883617473185569,
+      "patient_3d_fg_dice_mean": 0.7791020602926519,
+      "patient_3d_fg_dice_std": 0.0452395977233845,
+      "patient_3d_rv_dice": 0.8260460273055298,
+      "patient_3d_myo_dice": 0.6370908315036203,
+      "patient_3d_lv_dice": 0.8741693220688057
+    },
+    "Clean + CLAHE (clip=0.01)": {
+      "slice_fg_dice": 0.6949441509846233,
+      "patient_3d_fg_dice_mean": 0.7856780531213925,
+      "patient_3d_fg_dice_std": 0.0430377723599127,
+      "patient_3d_rv_dice": 0.8201777866963902,
+      "patient_3d_myo_dice": 0.6547825326784279,
+      "patient_3d_lv_dice": 0.8820738399893593
+    },
+    "Clean + CLAHE (clip=0.02)": {
+      "slice_fg_dice": 0.6458605513845587,
+      "patient_3d_fg_dice_mean": 0.7188983118450882,
+      "patient_3d_fg_dice_std": 0.08158412734950818,
+      "patient_3d_rv_dice": 0.6849726335600103,
+      "patient_3d_myo_dice": 0.625310147063097,
+      "patient_3d_lv_dice": 0.8464121549121574
+    },
+    "Clean + Global HE": {
+      "slice_fg_dice": 0.6510923936979297,
+      "patient_3d_fg_dice_mean": 0.7506850035192352,
+      "patient_3d_fg_dice_std": 0.06833265711822874,
+      "patient_3d_rv_dice": 0.7839799140550275,
+      "patient_3d_myo_dice": 0.6043757454744684,
+      "patient_3d_lv_dice": 0.8636993510282095
+    },
+    "Clean + Gaussian Filter (sigma=0.5)": {
+      "slice_fg_dice": 0.687994189077734,
+      "patient_3d_fg_dice_mean": 0.7766447871614431,
+      "patient_3d_fg_dice_std": 0.04706618908329816,
+      "patient_3d_rv_dice": 0.8214508390798907,
+      "patient_3d_myo_dice": 0.6345313181409675,
+      "patient_3d_lv_dice": 0.8739522042634714
+    },
+    "Clean + Median Filter (size=3)": {
+      "slice_fg_dice": 0.6879480927051836,
+      "patient_3d_fg_dice_mean": 0.775767850856699,
+      "patient_3d_fg_dice_std": 0.046482518095283296,
+      "patient_3d_rv_dice": 0.8143709365330981,
+      "patient_3d_myo_dice": 0.6382927919232565,
+      "patient_3d_lv_dice": 0.8746398241137423
+    }
+  }
+}
