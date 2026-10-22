@@ -196,8 +196,8 @@ def postprocess_cardiac_segmentation(
     if np.any(lv_mask):
         if enable_lcc:
             lv_mask = keep_largest_connected_component(lv_mask)
-        else:
-            lv_mask = filter_small_components(lv_mask, min_size=min_sizes[3])
+        # Apply class-specific minimum-size threshold to eliminate undersized components
+        lv_mask = filter_small_components(lv_mask, min_size=min_sizes[3])
         if enable_hole_filling:
             # Unrestricted hole filling is valid for solid LV cavity
             lv_mask = fill_mask_holes(lv_mask, max_hole_size=None)
@@ -207,8 +207,8 @@ def postprocess_cardiac_segmentation(
     if np.any(myo_mask):
         if enable_lcc:
             myo_mask = keep_largest_connected_component(myo_mask)
-        else:
-            myo_mask = filter_small_components(myo_mask, min_size=min_sizes[2])
+        # Apply class-specific minimum-size threshold to eliminate undersized components
+        myo_mask = filter_small_components(myo_mask, min_size=min_sizes[2])
         if enable_hole_filling:
             # CRITICAL SAFEGUARD: Restrict hole-filling size to protect hollow LV interior
             myo_mask = fill_mask_holes(myo_mask, max_hole_size=max_myo_hole_size)
@@ -216,11 +216,10 @@ def postprocess_cardiac_segmentation(
     # 3. Process Class 1 (Right Ventricle Cavity)
     rv_mask = (pred_mask == 1).astype(np.uint8)
     if np.any(rv_mask):
-        # RV may have complex geometry near base; filter small spurious noise
         if enable_lcc:
             rv_mask = keep_largest_connected_component(rv_mask)
-        else:
-            rv_mask = filter_small_components(rv_mask, min_size=min_sizes[1])
+        # Apply class-specific minimum-size threshold to eliminate undersized components
+        rv_mask = filter_small_components(rv_mask, min_size=min_sizes[1])
         if enable_hole_filling:
             rv_mask = fill_mask_holes(rv_mask, max_hole_size=None)
 

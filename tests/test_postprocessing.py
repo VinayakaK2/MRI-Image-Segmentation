@@ -111,3 +111,98 @@ def test_postprocess_cardiac_segmentation_multiclass():
     assert cleaned[32, 32] == 3  # LV center
     assert cleaned[32, 44] == 2  # Myocardium
     assert cleaned[0, 0] == 0    # Background
+
+
+def test_postprocess_single_undersized_component_removed_across_all_classes():
+    """Verifies that single undersized components are removed across RV, MYO, and LV even under enable_lcc=True."""
+    for class_idx, min_size in [(1, 30), (2, 50), (3, 30)]:
+        pred = np.zeros((40, 40), dtype=np.int64)
+        # Create a single small component of 12 pixels (< min_size)
+        pred[5:8, 5:9] = class_idx
+        assert np.sum(pred == class_idx) == 12
+
+        cleaned = postprocess_cardiac_segmentation(pred, enable_lcc=True)
+        # Under enable_lcc=True with size filtering, this component must be removed
+        assert np.sum(cleaned == class_idx) == 0, f"Class {class_idx} small island of size 12 should be removed"
+
+
+def test_postprocess_multiple_undersized_components_all_removed():
+    """Verifies that when multiple components exist but the largest is still below min_size, all are removed."""
+    pred = np.zeros((50, 50), dtype=np.int64)
+    # Class 1 (RV, min_size=30): Component A (20 pixels), Component B (8 pixels)
+    pred[5:9, 5:10] = 1   # 4x5 = 20 pixels (largest, but < 30)
+    pred[25:27, 25:29] = 1 # 2x4 = 8 pixels
+    assert np.sum(pred == 1) == 28
+
+    cleaned = postprocess_cardiac_segmentation(pred, enable_lcc=True)
+    assert np.sum(cleaned == 1) == 0
+
+
+def test_postprocess_component_exactly_at_threshold_survives():
+    """Verifies that a component with area exactly equal to the class threshold is retained."""
+    # Test Class 1 (RV, threshold 30): 5x6 = 30 pixels
+    pred1 = np.zeros((40, 40), dtype=np.int64)
+    pred1[10:15, 10:16] = 1
+    assert np.sum(pred1 == 1) == 30
+    cleaned1 = postprocess_cardiac_segmentation(pred1, enable_lcc=True)
+    assert np.sum(cleaned1 == 1) == 30
+
+    # Test Class 2 (Myo, threshold 50): 5x10 = 50 pixels
+    pred2 = np.zeros((40, 40), dtype=np.int64)
+    pred2[10:15, 10:20] = 2
+    assert np.sum(pred2 == 2) == 50
+    cleaned2 = postprocess_cardiac_segmentation(pred2, enable_lcc=True)
+    assert np.sum(cleaned2 == 2) == 50
+
+    # Test Class 3 (LV, threshold 30): 5x6 = 30 pixels
+    pred3 = np.zeros((40, 40), dtype=np.int64)
+    pred3[10:15, 10:16] = 3
+    assert np.sum(pred3 == 3) == 30
+    cleaned3 = postprocess_cardiac_segmentation(pred3, enable_lcc=True)
+    assert np.sum(cleaned3 == 3) == 30
+
+
+def test_postprocess_valid_component_survives_while_smaller_islands_removed():
+    """Verifies that a component exceeding min_size survives while small noise islands are removed."""
+    pred = np.zeros((50, 50), dtype=np.int64)
+    # Valid LV component: 10x10 = 100 pixels (> 30)
+    pred[10:20, 10:20] = 3
+    # Small noise island: 3x3 = 9 pixels (< 30)
+    pred[35:38, 35:38] = 3
+    assert np.sum(pred == 3) == 109
+
+    cleaned = postprocess_cardiac_segmentation(pred, enable_lcc=True)
+    assert np.sum(cleaned == 3) == 100
+    assert np.all(cleaned[10:20, 10:20] == 3)
+    assert np.all(cleaned[35:38, 35:38] == 0)
+
+
+def test_postprocess_empty_mask():
+    """Verifies that all-zero masks are handled gracefully without exceptions."""
+    empty = np.zeros((32, 32), dtype=np.int64)
+    cleaned = postprocess_cardiac_segmentation(empty, enable_lcc=True, enable_hole_filling=True)
+    assert np.all(cleaned == 0)
+    assert cleaned.shape == (32, 32)
+    assert cleaned.dtype == np.int64
+
+
+def test_postprocess_hole_filling_and_class_conflict():
+    """Verifies hole filling interaction with blood pool priorities over myocardium."""
+    pred = np.zeros((40, 40), dtype=np.int64)
+
+    # Myocardium solid block 20x20
+    pred[10:30, 10:30] = 2
+
+    # LV cavity placed in center 8x8 overlapping Myocardium
+    pred[16:24, 16:24] = 3
+
+    # Add 2-pixel hole in LV cavity
+    pred[18:20, 18:20] = 0
+
+    cleaned = postprocess_cardiac_segmentation(pred, enable_lcc=True, enable_hole_filling=True)
+
+    # LV should take priority and its hole should be filled
+    assert np.all(cleaned[16:24, 16:24] == 3)
+    # Outer region should remain Myocardium
+    assert cleaned[12, 12] == 2
+    assert cleaned[0, 0] == 0

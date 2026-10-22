@@ -6,6 +6,7 @@ import pytest
 from src.evaluation.patient_metrics import (
     PatientMetricAccumulator,
     adjust_pvalues_holm,
+    classify_significance,
     compute_paired_patient_comparison,
 )
 
@@ -143,3 +144,93 @@ def test_phase5_hypothesis_families_sizes() -> None:
     adj_f2 = adjust_pvalues_holm([0.001] * f2_clahe_contrast)
     assert len(adj_f2) == 3
     assert pytest.approx(adj_f2[0], abs=1e-5) == 0.003
+
+
+def test_classify_significance() -> None:
+    """Verifies significance classification under primary t-test and concordant policies."""
+    # 1. Both primary and sensitivity tests significant after Holm correction
+    res1 = classify_significance(
+        paired_t_pvalue_raw=0.001,
+        paired_t_pvalue_holm=0.003,
+        wilcoxon_pvalue_raw=0.002,
+        wilcoxon_pvalue_holm=0.006,
+        alpha=0.05,
+        policy="primary_t_test",
+    )
+    assert res1 == "Significant"
+
+    # 2. Only primary t-test significant after Holm correction (Wilcoxon not significant)
+    res2 = classify_significance(
+        paired_t_pvalue_raw=0.005,
+        paired_t_pvalue_holm=0.02,
+        wilcoxon_pvalue_raw=0.04,
+        wilcoxon_pvalue_holm=0.10,
+        alpha=0.05,
+        policy="primary_t_test",
+    )
+    assert res2 == "Significant"
+
+    # 3. Only Wilcoxon significant after Holm correction (primary t-test fails -> protects FWER)
+    res3 = classify_significance(
+        paired_t_pvalue_raw=0.04,
+        paired_t_pvalue_holm=0.12,
+        wilcoxon_pvalue_raw=0.005,
+        wilcoxon_pvalue_holm=0.015,
+        alpha=0.05,
+        policy="primary_t_test",
+    )
+    assert res3 == "Nominal Only (Unadjusted)"
+
+    # 4. Neither significant after Holm correction, but unadjusted t-test is nominal
+    res4 = classify_significance(
+        paired_t_pvalue_raw=0.02,
+        paired_t_pvalue_holm=0.08,
+        wilcoxon_pvalue_raw=0.06,
+        wilcoxon_pvalue_holm=0.15,
+        alpha=0.05,
+        policy="primary_t_test",
+    )
+    assert res4 == "Nominal Only (Unadjusted)"
+
+    # 5. Neither significant after Holm correction, but unadjusted Wilcoxon is nominal
+    res5 = classify_significance(
+        paired_t_pvalue_raw=0.08,
+        paired_t_pvalue_holm=0.20,
+        wilcoxon_pvalue_raw=0.03,
+        wilcoxon_pvalue_holm=0.09,
+        alpha=0.05,
+        policy="primary_t_test",
+    )
+    assert res5 == "Nominal Only (Unadjusted)"
+
+    # 6. Completely non-significant
+    res6 = classify_significance(
+        paired_t_pvalue_raw=0.25,
+        paired_t_pvalue_holm=0.50,
+        wilcoxon_pvalue_raw=0.30,
+        wilcoxon_pvalue_holm=0.60,
+        alpha=0.05,
+        policy="primary_t_test",
+    )
+    assert res6 == "Not Significant"
+
+    # 7. Reference baseline with None / "N/A"
+    assert classify_significance("N/A", "N/A", "N/A", "N/A") == "Reference Baseline"
+    assert classify_significance(None, None, None, None) == "Reference Baseline"
+
+    # 8. Boundary conditions: exactly alpha (0.05) is NOT significant (< alpha required)
+    assert classify_significance(0.05, 0.05, 0.05, 0.05, alpha=0.05) == "Not Significant"
+    assert classify_significance(0.0499, 0.0499, 0.05, 0.05, alpha=0.05) == "Significant"
+    assert classify_significance(0.0, 0.0, 0.0, 0.0, alpha=0.05) == "Significant"
+    assert classify_significance(1.0, 1.0, 1.0, 1.0, alpha=0.05) == "Not Significant"
+
+    # 9. Concordant policy: requires both to be significant after Holm
+    assert classify_significance(0.001, 0.02, 0.002, 0.04, alpha=0.05, policy="concordant") == "Significant"
+    assert classify_significance(0.001, 0.02, 0.04, 0.08, alpha=0.05, policy="concordant") == "Nominal Only (Unadjusted)"
+
+    # 10. String numeric inputs
+    assert classify_significance("0.001", "0.003", "0.002", "0.006") == "Significant"
+
+    # 11. Invalid policy raises ValueError
+    with pytest.raises(ValueError, match="Unknown significance policy"):
+        classify_significance(0.01, 0.02, 0.01, 0.02, policy="invalid_policy")

@@ -5,15 +5,29 @@ Separates raw from Holm-adjusted p-values across clearly defined families:
 2. CLAHE alone across contrast reduction conditions (m=3)
 3. Combined CLAHE + post-processing across contrast conditions (m=3)
 4. Combined Median + post-processing across noise conditions (m=3)
+
+Statistical Decision Policy:
+- Pre-specifies two-tailed paired Student's t-test as primary confirmatory test
+  adjusted via Holm-Bonferroni step-down within each family (alpha=0.05).
+- Non-parametric Wilcoxon signed-rank test is reported as sensitivity analysis.
+- Significance ('Significant') is declared iff primary Holm-adjusted t-test p < 0.05.
+- Nominal effects with unadjusted p < 0.05 (or Wilcoxon sensitivity reaching significance)
+  are labeled 'Nominal Only (Unadjusted)' to protect FWER.
 """
 
 import csv
 import json
 from pathlib import Path
+import sys
 import numpy as np
 import scipy.stats as stats
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.evaluation.patient_metrics import classify_significance
+
 
 
 def step_down_holm(pvals):
@@ -148,9 +162,14 @@ def main():
         w_r, w_h = post_w_raw[i], post_w_holm[i]
         diff = post_diffs[i]
 
-        sig = "Significant" if (w_h < 0.05 or t_h < 0.05) else "Not Significant"
-        if sig == "Not Significant" and (w_r < 0.05 or t_r < 0.05):
-            sig = "Nominal Only (Unadjusted)"
+        sig = classify_significance(
+            paired_t_pvalue_raw=t_r,
+            paired_t_pvalue_holm=t_h,
+            wilcoxon_pvalue_raw=w_r,
+            wilcoxon_pvalue_holm=w_h,
+            alpha=0.05,
+            policy="primary_t_test",
+        )
 
         rows.append({
             "condition_id": cid,
@@ -181,9 +200,14 @@ def main():
             t_r, t_h = clahe_t_raw[idx], clahe_t_holm[idx]
             w_r, w_h = clahe_w_raw[idx], clahe_w_holm[idx]
             diff = clahe_diffs[idx]
-            sig = "Significant" if (w_h < 0.05 or t_h < 0.05) else "Not Significant"
-            if sig == "Not Significant" and (w_r < 0.05 or t_r < 0.05):
-                sig = "Nominal Only (Unadjusted)"
+            sig = classify_significance(
+                paired_t_pvalue_raw=t_r,
+                paired_t_pvalue_holm=t_h,
+                wilcoxon_pvalue_raw=w_r,
+                wilcoxon_pvalue_holm=w_h,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
             t_r_str, t_h_str = f"{t_r:.4e}", f"{t_h:.4e}"
             w_r_str, w_h_str = f"{w_r:.4e}", f"{w_h:.4e}"
         else:
@@ -194,7 +218,14 @@ def main():
             w_r = float(stats.wilcoxon(t_vals, u_vals).pvalue)
             t_r_str, t_h_str = f"{t_r:.4e}", "N/A"
             w_r_str, w_h_str = f"{w_r:.4e}", "N/A"
-            sig = "Nominal Only (Unadjusted)" if (t_r < 0.05 or w_r < 0.05) else "Not Significant"
+            sig = classify_significance(
+                paired_t_pvalue_raw=t_r,
+                paired_t_pvalue_holm=None,
+                wilcoxon_pvalue_raw=w_r,
+                wilcoxon_pvalue_holm=None,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
 
         rows.append({
             "condition_id": cid,
@@ -225,9 +256,14 @@ def main():
             t_r, t_h = combc_t_raw[idx], combc_t_holm[idx]
             w_r, w_h = combc_w_raw[idx], combc_w_holm[idx]
             diff = combc_diffs[idx]
-            sig = "Significant" if (w_h < 0.05 or t_h < 0.05) else "Not Significant"
-            if sig == "Not Significant" and (w_r < 0.05 or t_r < 0.05):
-                sig = "Nominal Only (Unadjusted)"
+            sig = classify_significance(
+                paired_t_pvalue_raw=t_r,
+                paired_t_pvalue_holm=t_h,
+                wilcoxon_pvalue_raw=w_r,
+                wilcoxon_pvalue_holm=w_h,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
             t_r_str, t_h_str = f"{t_r:.4e}", f"{t_h:.4e}"
             w_r_str, w_h_str = f"{w_r:.4e}", f"{w_h:.4e}"
         else:
@@ -238,7 +274,14 @@ def main():
             w_r = float(stats.wilcoxon(t_vals, u_vals).pvalue)
             t_r_str, t_h_str = f"{t_r:.4e}", "N/A"
             w_r_str, w_h_str = f"{w_r:.4e}", "N/A"
-            sig = "Not Significant"
+            sig = classify_significance(
+                paired_t_pvalue_raw=t_r,
+                paired_t_pvalue_holm=None,
+                wilcoxon_pvalue_raw=w_r,
+                wilcoxon_pvalue_holm=None,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
 
         rows.append({
             "condition_id": cid,
@@ -269,9 +312,14 @@ def main():
             t_r, t_h = combn_t_raw[idx], combn_t_holm[idx]
             w_r, w_h = combn_w_raw[idx], combn_w_holm[idx]
             diff = combn_diffs[idx]
-            sig = "Significant" if (w_h < 0.05 or t_h < 0.05) else "Not Significant"
-            if sig == "Not Significant" and (w_r < 0.05 or t_r < 0.05):
-                sig = "Nominal Only (Unadjusted)"
+            sig = classify_significance(
+                paired_t_pvalue_raw=t_r,
+                paired_t_pvalue_holm=t_h,
+                wilcoxon_pvalue_raw=w_r,
+                wilcoxon_pvalue_holm=w_h,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
             t_r_str, t_h_str = f"{t_r:.4e}", f"{t_h:.4e}"
             w_r_str, w_h_str = f"{w_r:.4e}", f"{w_h:.4e}"
         else:
@@ -282,7 +330,14 @@ def main():
             w_r = float(stats.wilcoxon(t_vals, u_vals).pvalue)
             t_r_str, t_h_str = f"{t_r:.4e}", "N/A"
             w_r_str, w_h_str = f"{w_r:.4e}", "N/A"
-            sig = "Not Significant"
+            sig = classify_significance(
+                paired_t_pvalue_raw=t_r,
+                paired_t_pvalue_holm=None,
+                wilcoxon_pvalue_raw=w_r,
+                wilcoxon_pvalue_holm=None,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
 
         rows.append({
             "condition_id": cid,

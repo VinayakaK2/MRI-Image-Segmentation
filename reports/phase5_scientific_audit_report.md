@@ -205,16 +205,16 @@ Below are the independently recomputed values alongside the reconciled classific
 #### Family 1: Post-Processing Alone ($m = 10$)
 | Condition ID | Unmitigated Dice | Post-Proc Dice | Paired $\Delta$ | $t$-test $p_{\text{raw}}$ | $t$-test $p_{\text{Holm}}$ | Wilcoxon $p_{\text{raw}}$ | Wilcoxon $p_{\text{Holm}}$ | Reconciled Decision ($\alpha=0.05$) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| `clean_baseline` | $0.7355$ | $0.7414$ | $+0.0059$ | $0.1195$ | $0.7171$ | $0.0479$ | $0.3833$ | **Nominal Only (Unadjusted)** |
-| `gaussian_noise_mild` | $0.7355$ | $0.7417$ | $+0.0063$ | $0.0807$ | $0.5650$ | $0.0730$ | $0.4380$ | Not Significant |
-| `gaussian_noise_moderate` | $0.7345$ | $0.7415$ | $+0.0070$ | $0.0693$ | $0.5543$ | $0.0479$ | $0.3833$ | **Nominal Only (Unadjusted)** |
-| `gaussian_noise_severe` | $0.7313$ | $0.7419$ | $+0.0106$ | $0.0281$ | $0.2529$ | $0.0151$ | $0.1357$ | **Nominal Only (Unadjusted)** |
-| `gaussian_blur_mild` | $0.7287$ | $0.7300$ | $+0.0013$ | $0.7474$ | $1.0000$ | $0.2720$ | $1.0000$ | Not Significant |
-| `gaussian_blur_moderate` | $0.7077$ | $0.7097$ | $+0.0020$ | $0.6392$ | $1.0000$ | $0.3627$ | $1.0000$ | Not Significant |
-| `gaussian_blur_severe` | $0.6718$ | $0.6747$ | $+0.0028$ | $0.5015$ | $1.0000$ | $0.3967$ | $1.0000$ | Not Significant |
-| `contrast_reduction_mild` | $0.7310$ | $0.7399$ | $+0.0089$ | $0.0128$ | $0.1276$ | $0.0084$ | $0.0836$ | **Nominal Only (Unadjusted)** |
-| `contrast_reduction_moderate` | $0.6110$ | $0.6127$ | $+0.0017$ | $0.3769$ | $1.0000$ | $0.1578$ | $0.7891$ | Not Significant |
-| `contrast_reduction_severe` | $0.0405$ | $0.0404$ | $-0.0001$ | $0.2875$ | $1.0000$ | $0.4652$ | $1.0000$ | Not Significant |
+| `clean_baseline` | $0.7355$ | $0.7415$ | $+0.0059$ | $0.1170$ | $0.5851$ | $0.0413$ | $0.2888$ | **Nominal Only (Unadjusted)** |
+| `gaussian_noise_mild` | $0.7355$ | $0.7418$ | $+0.0063$ | $0.0784$ | $0.4706$ | $0.0637$ | $0.3186$ | Not Significant |
+| `gaussian_noise_moderate` | $0.7345$ | $0.7416$ | $+0.0070$ | $0.0672$ | $0.4703$ | $0.0479$ | $0.2888$ | **Nominal Only (Unadjusted)** |
+| `gaussian_noise_severe` | $0.7313$ | $0.7420$ | $+0.0106$ | $0.0272$ | $0.2178$ | $0.0151$ | $0.1357$ | **Nominal Only (Unadjusted)** |
+| `gaussian_blur_mild` | $0.7287$ | $0.7299$ | $+0.0012$ | $0.7647$ | $1.0000$ | $0.2720$ | $0.8158$ | Not Significant |
+| `gaussian_blur_moderate` | $0.7077$ | $0.7097$ | $+0.0020$ | $0.6365$ | $1.0000$ | $0.3627$ | $0.8158$ | Not Significant |
+| `gaussian_blur_severe` | $0.6718$ | $0.6747$ | $+0.0029$ | $0.4951$ | $1.0000$ | $0.3967$ | $0.8158$ | Not Significant |
+| `contrast_reduction_mild` | $0.7310$ | $0.7396$ | $+0.0087$ | $0.0151$ | $0.1506$ | $0.0084$ | $0.0836$ | **Nominal Only (Unadjusted)** |
+| `contrast_reduction_moderate` | $0.6110$ | $0.6126$ | $+0.0016$ | $0.3766$ | $1.0000$ | $0.1205$ | $0.4822$ | Not Significant |
+| `contrast_reduction_severe` | $0.0405$ | $0.0394$ | $-0.0011$ | $0.0203$ | $0.1827$ | $0.0277$ | $0.2217$ | **Nominal Only (Unadjusted)** |
 
 #### Family 2: CLAHE Alone on Contrast ($m = 3$)
 | Condition ID | Unmitigated Dice | CLAHE Dice | Paired $\Delta$ | $t$-test $p_{\text{raw}}$ | $t$-test $p_{\text{Holm}}$ | Wilcoxon $p_{\text{raw}}$ | Wilcoxon $p_{\text{Holm}}$ | Reconciled Decision ($\alpha=0.05$) |
@@ -226,20 +226,53 @@ Below are the independently recomputed values alongside the reconciled classific
 #### Family 3: Combined (CLAHE + Post-Processing) on Contrast ($m = 3$)
 | Condition ID | Unmitigated Dice | Combined Dice | Paired $\Delta$ | $t$-test $p_{\text{raw}}$ | $t$-test $p_{\text{Holm}}$ | Wilcoxon $p_{\text{raw}}$ | Wilcoxon $p_{\text{Holm}}$ | Reconciled Decision ($\alpha=0.05$) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| `contrast_reduction_severe` | $0.0405$ | $0.7395$ | $\mathbf{+0.6990}$ | $2.57 \times 10^{-13}$ | $\mathbf{7.71 \times 10^{-13}}$ | $6.10 \times 10^{-5}$ | $\mathbf{1.83 \times 10^{-4}}$ | **Statistically Significant** |
-| `contrast_reduction_moderate` | $0.6110$ | $0.7395$ | $\mathbf{+0.1285}$ | $9.88 \times 10^{-5}$ | $\mathbf{1.98 \times 10^{-4}}$ | $6.10 \times 10^{-5}$ | $\mathbf{1.83 \times 10^{-4}}$ | **Statistically Significant** |
+| `contrast_reduction_severe` | $0.0405$ | $0.7395$ | $\mathbf{+0.6990}$ | $2.55 \times 10^{-13}$ | $\mathbf{7.66 \times 10^{-13}}$ | $6.10 \times 10^{-5}$ | $\mathbf{1.83 \times 10^{-4}}$ | **Statistically Significant** |
+| `contrast_reduction_moderate` | $0.6110$ | $0.7395$ | $\mathbf{+0.1285}$ | $9.73 \times 10^{-5}$ | $\mathbf{1.95 \times 10^{-4}}$ | $6.10 \times 10^{-5}$ | $\mathbf{1.83 \times 10^{-4}}$ | **Statistically Significant** |
 | `contrast_reduction_mild` | $0.7310$ | $0.7395$ | $+0.0085$ | $0.3476$ | $0.3476$ | $0.1514$ | $0.1514$ | Not Significant |
 
 #### Family 4: Combined (Median + Post-Processing) on Noise ($m = 3$)
 | Condition ID | Unmitigated Dice | Combined Dice | Paired $\Delta$ | $t$-test $p_{\text{raw}}$ | $t$-test $p_{\text{Holm}}$ | Wilcoxon $p_{\text{raw}}$ | Wilcoxon $p_{\text{Holm}}$ | Reconciled Decision ($\alpha=0.05$) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| `gaussian_noise_mild` | $0.7355$ | $0.7325$ | $-0.0029$ | $0.4487$ | $1.0000$ | $0.7197$ | $1.0000$ | Not Significant |
-| `gaussian_noise_moderate` | $0.7345$ | $0.7322$ | $-0.0024$ | $0.5773$ | $1.0000$ | $0.8904$ | $1.0000$ | Not Significant |
-| `gaussian_noise_severe` | $0.7313$ | $0.7315$ | $+0.0002$ | $0.9677$ | $1.0000$ | $0.5995$ | $1.0000$ | Not Significant |
+| `gaussian_noise_mild` | $0.7355$ | $0.7325$ | $-0.0029$ | $0.4484$ | $1.0000$ | $0.7197$ | $1.0000$ | Not Significant |
+| `gaussian_noise_moderate` | $0.7345$ | $0.7320$ | $-0.0025$ | $0.5617$ | $1.0000$ | $0.9341$ | $1.0000$ | Not Significant |
+| `gaussian_noise_severe` | $0.7313$ | $0.7315$ | $+0.0001$ | $0.9794$ | $1.0000$ | $0.6387$ | $1.0000$ | Not Significant |
 
 #### Key Discrepancy Rectified:
 In the earliest unadjusted drafts of the Phase 5 report, rows with unadjusted Wilcoxon $p_{\text{raw}} < 0.05$ (e.g. clean post-processing $p=0.0479$, severe noise post-processing $p=0.0151$) were loosely labeled as "Significant".
 **Audited Resolution**: Under Holm FWER control across the 10 post-processing conditions, $p_{\text{Holm}}$ ranges from $0.0836$ to $0.3833$, which does not meet the $\alpha=0.05$ significance threshold. These comparisons are now strictly labeled as **Nominal Only (Unadjusted)** across [`reports/mitigation_results.csv`](file:///h:/Mini%20project/reports/mitigation_results.csv) and [`reports/phase5_mitigation_report.md`](file:///h:/Mini%20project/reports/phase5_mitigation_report.md).
+
+---
+
+### 5.3 Formal Resolution of Code Review Findings in PR #1
+
+In response to expert review on Pull Request #1, three critical enhancements were implemented and verified across the pipeline:
+
+1. **Review Finding #1: Cache Invalidation & Cryptographic Provenance**
+   - **Issue**: Cached results in `reports/mitigation_results.json` could previously be reused without cryptographic verification of matching code, model weights, config, and dataset manifest.
+   - **Resolution**:
+     - Introduced `src/utils/provenance.py` implementing `build_cache_provenance`, `validate_cache_provenance`, and `resolve_cache_state`.
+     - All cache files record schema version (`1.0.0`) and SHA-256 digests of the frozen model checkpoint (`e7bfa884bef0f4eafce30cd6948c8d60fc4e7c8c8ca2d0bb0e83f2977fc29c02`), configuration YAML (`b5e92bc09fc0e91ef7bb170fd6a478de0830dd1a73b44d2e5e6c244a764584b6`), and dataset slice manifest (`c8669cf38313b4010598c673be1c4c590575aac8767758f8bd51c40ff7a5fee9`).
+     - Added `--force-recompute` option to `scripts/evaluate_mitigation_test.py` allowing explicit, complete cache bypass.
+     - Covered by automated tests in `tests/test_evaluation_cache.py`.
+
+2. **Review Finding #2: Family-Wise Error Rate (FWER) Decision Policy**
+   - **Issue**: Significance classification previously evaluated an unconstrained OR condition (`t_holm < 0.05 or w_holm < 0.05`), which could inflate false positives beyond nominal $\alpha$.
+   - **Resolution**:
+     - Implemented `classify_significance(..., policy="primary_t_test")` in `src/evaluation/patient_metrics.py`.
+     - Formally pre-specifies the two-tailed paired Student's $t$-test with step-down Holm correction as the primary confirmatory test.
+     - Wilcoxon signed-rank test is reported as a non-parametric sensitivity analysis.
+     - Strict rule: A comparison is declared 'Significant' iff primary $t$-test $p_{\text{Holm}} < 0.05$. If primary $p_{\text{Holm}} \ge 0.05$, any nominal raw significance is designated strictly as 'Nominal Only (Unadjusted)'.
+     - Covered by unit tests in `tests/test_patient_metrics.py`.
+
+3. **Review Finding #3: Morphological Minimum Component Size Filtering**
+   - **Issue**: Morphological cleanup selected the Largest Connected Component (LCC) for each cardiac structure but previously did not prune the LCC if it represented a minuscule, spurious false positive island.
+   - **Resolution**:
+     - Updated `postprocess_cardiac_segmentation` in `src/postprocessing/morphology.py` to apply class-specific minimum area thresholding on each selected component:
+       - Right Ventricle (RV, class 1): Minimum component size = 30 pixels.
+       - Myocardium (class 2): Minimum component size = 50 pixels.
+       - Left Ventricle (LV, class 3): Minimum component size = 30 pixels.
+     - Pruned undersized islands revert to background (class 0) unless enclosed within myocardium (handled by safeguarded hole-filling).
+     - Covered by unit tests in `tests/test_postprocessing.py`.
 
 ---
 

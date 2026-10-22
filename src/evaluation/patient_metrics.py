@@ -1,6 +1,6 @@
 """Patient-level 3D volume metric pooling and statistical comparison framework."""
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 import scipy.stats as stats
 
@@ -150,6 +150,84 @@ def adjust_pvalues_holm(p_values: List[float]) -> List[float]:
     for (orig_idx, _), adj_p in zip(indexed, adjusted_sorted):
         result[orig_idx] = adj_p
     return result
+
+
+def classify_significance(
+    paired_t_pvalue_raw: Optional[Union[float, str]],
+    paired_t_pvalue_holm: Optional[Union[float, str]],
+    wilcoxon_pvalue_raw: Optional[Union[float, str]],
+    wilcoxon_pvalue_holm: Optional[Union[float, str]],
+    alpha: float = 0.05,
+    policy: str = "primary_t_test",
+) -> str:
+    """Classifies hypothesis significance controlling Family-Wise Error Rate (FWER).
+
+    Decision Policy ('primary_t_test'):
+    - Pre-specifies the two-tailed paired Student's t-test as the primary confirmatory
+      hypothesis test within each pre-registered family, adjusted via the step-down
+      Holm-Bonferroni procedure to control family-wise error rate at alpha.
+    - The Wilcoxon signed-rank test is reported as a non-parametric sensitivity analysis.
+    - A comparison is declared 'Significant' iff the primary Holm-adjusted p-value < alpha.
+    - When primary Holm p-value >= alpha, but either raw unadjusted p-value < alpha (or
+      sensitivity analysis reaches unadjusted significance), the comparison is strictly
+      designated as 'Nominal Only (Unadjusted)'.
+    - Otherwise, it is designated as 'Not Significant'.
+
+    Supported policies:
+    - 'primary_t_test': Primary confirmatory t-test; Wilcoxon sensitivity analysis.
+    - 'concordant': Requires BOTH t-test and Wilcoxon Holm-adjusted p-values < alpha.
+
+    Args:
+        paired_t_pvalue_raw: Uncorrected p-value from paired t-test (or 'N/A').
+        paired_t_pvalue_holm: Holm-adjusted p-value from paired t-test (or 'N/A').
+        wilcoxon_pvalue_raw: Uncorrected p-value from Wilcoxon signed-rank test (or 'N/A').
+        wilcoxon_pvalue_holm: Holm-adjusted p-value from Wilcoxon test (or 'N/A').
+        alpha: Family-wise significance threshold (default 0.05).
+        policy: Decision policy name (default 'primary_t_test').
+
+    Returns:
+        Significance decision string: 'Significant', 'Nominal Only (Unadjusted)',
+        or 'Not Significant'. If inputs are N/A/None, returns 'Reference Baseline'.
+    """
+    def to_float(val: Optional[Union[float, str]]) -> Optional[float]:
+        if val is None or val == "" or str(val).strip().upper() in ("N/A", "NONE", "NAN"):
+            return None
+        try:
+            return float(val)
+        except (ValueError, TypeError):
+            return None
+
+    t_raw = to_float(paired_t_pvalue_raw)
+    t_holm = to_float(paired_t_pvalue_holm)
+    w_raw = to_float(wilcoxon_pvalue_raw)
+    w_holm = to_float(wilcoxon_pvalue_holm)
+
+    # Reference / unmitigated baselines without test statistics
+    if t_raw is None and t_holm is None and w_raw is None and w_holm is None:
+        return "Reference Baseline"
+
+    if policy == "concordant":
+        if t_holm is not None and w_holm is not None and t_holm < alpha and w_holm < alpha:
+            return "Significant"
+    elif policy == "primary_t_test":
+        if t_holm is not None and t_holm < alpha:
+            return "Significant"
+    else:
+        raise ValueError(f"Unknown significance policy: {policy}")
+
+    # Check nominal unadjusted significance
+    has_nominal = False
+    if t_raw is not None and t_raw < alpha:
+        has_nominal = True
+    if w_raw is not None and w_raw < alpha:
+        has_nominal = True
+    if w_holm is not None and w_holm < alpha:
+        has_nominal = True
+
+    if has_nominal:
+        return "Nominal Only (Unadjusted)"
+
+    return "Not Significant"
 
 
 def compute_paired_patient_comparison(

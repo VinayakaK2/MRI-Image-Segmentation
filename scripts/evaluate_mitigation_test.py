@@ -46,6 +46,11 @@ from src.preprocessing.restoration import (
     apply_median_denoising,
 )
 from src.utils.config_parser import load_yaml_config
+from src.utils.provenance import (
+    CACHE_SCHEMA_VERSION,
+    build_cache_provenance,
+    resolve_cache_state,
+)
 from src.utils.reproducibility import get_device, set_seed
 
 
@@ -129,19 +134,87 @@ def evaluate_test_pipeline(
     return slice_averages, per_patient, patient_summary
 
 
+def parse_args() -> argparse.Namespace:
+    """Parses command line arguments for the Phase 5 evaluation pipeline."""
+    parser = argparse.ArgumentParser(
+        description="Phase 5 controlled mitigation and ablation evaluation on held-out test cohort."
+    )
+    parser.add_argument(
+        "--force-recompute",
+        action="store_true",
+        default=False,
+        help="Bypass cached evaluation results and recompute all interventions/conditions.",
+    )
+    parser.add_argument(
+        "--checkpoint",
+        type=Path,
+        default=None,
+        help="Path to frozen model checkpoint (defaults to checkpoints/best_model_frozen.pt).",
+    )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=None,
+        help="Path to model YAML configuration (defaults to configs/baseline_unet.yaml).",
+    )
+    parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=None,
+        help="Path to dataset slice manifest JSON (defaults to data/processed/acdc_slice_manifest.json).",
+    )
+    parser.add_argument(
+        "--output-json",
+        type=Path,
+        default=None,
+        help="Path to output results JSON (defaults to reports/mitigation_results.json).",
+    )
+    parser.add_argument(
+        "--output-csv",
+        type=Path,
+        default=None,
+        help="Path to output summary CSV (defaults to reports/mitigation_results.csv).",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     set_seed(42)
     device = get_device("auto")
     print("=" * 80)
     print("  PHASE 5: CONTROLLED MITIGATION & ABLATION EVALUATION (HELD-OUT TEST)")
     print("=" * 80, flush=True)
 
-    # 1. Load frozen baseline checkpoint
-    ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
+    # 1. Resolve file paths and evaluate cryptographic provenance
+    ckpt_path = args.checkpoint or (PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt")
     if not ckpt_path.exists():
         ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
 
-    config_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
+    config_path = args.config or (PROJECT_ROOT / "configs" / "baseline_unet.yaml")
+    manifest_path = args.manifest or (PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json")
+    out_json_path = args.output_json or (PROJECT_ROOT / "reports" / "mitigation_results.json")
+    out_csv_path = args.output_csv or (PROJECT_ROOT / "reports" / "mitigation_results.csv")
+
+    expected_provenance = build_cache_provenance(
+        checkpoint_path=ckpt_path,
+        config_path=config_path,
+        manifest_path=manifest_path,
+        schema_version=CACHE_SCHEMA_VERSION,
+    )
+    print(f"[PROVENANCE] Checkpoint:     {ckpt_path} (SHA-256: {expected_provenance['checkpoint_sha256']})")
+    print(f"[PROVENANCE] Config:         {config_path} (SHA-256: {expected_provenance['config_sha256']})")
+    print(f"[PROVENANCE] Manifest:       {manifest_path} (SHA-256: {expected_provenance['manifest_sha256']})")
+    print(f"[PROVENANCE] Schema Version: {expected_provenance['schema_version']}", flush=True)
+
+    # Resolve cache state with cryptographic provenance validation
+    existing_results, is_cache_reused, cache_msg = resolve_cache_state(
+        cache_path=out_json_path,
+        expected_provenance=expected_provenance,
+        force_recompute=args.force_recompute,
+    )
+    print(f"[PROVENANCE] Cache Resolution: {cache_msg}\n", flush=True)
+
     cfg = load_yaml_config(config_path)
 
     model = LightweightUNet2D(
@@ -163,7 +236,6 @@ def main():
     model.eval()
 
     # 2. Load held-out test split
-    manifest_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
     test_dataset = ACDCSliceDataset(
         manifest_path=manifest_path,
         split="test",
@@ -181,53 +253,7 @@ def main():
     all_evaluation_records: Dict[str, Any] = {}
     csv_rows: List[Dict[str, Any]] = []
 
-    # First, load Unmitigated Baseline across all 10 conditions from Phase 4 frozen results
-    print("--- 1. Loading Unmitigated Baseline (Phase 4 Frozen Reference) ---", flush=True)
-    unmitigated_results: Dict[str, Any] = {}
-    robustness_json_path = PROJECT_ROOT / "reports" / "robustness_results.json"
-    if robustness_json_path.exists():
-        with open(robustness_json_path, "r", encoding="utf-8") as f:
-            rob_data = json.load(f)
-        for cond in CONDITIONS:
-            cid = cond["id"]
-            if cid in rob_data.get("conditions", {}):
-                c_data = rob_data["conditions"][cid]
-                unmitigated_results[cid] = {
-                    "slice_level": c_data["slice_level"],
-                    "per_patient": c_data["patient_level"],
-                    "patient_summary": c_data["patient_summary"],
-                }
-                fg_slice = c_data["slice_level"]["mean_dice_foreground"]
-                fg_patient = c_data["patient_summary"]["mean_dice_foreground"]["mean"]
-                print(f"  [{cid:<28}] Slice FG Dice: {fg_slice:.4f} | Patient 3D Dice: {fg_patient:.4f} [Loaded]", flush=True)
-    
-    # If any condition is missing, evaluate it
-    for cond in CONDITIONS:
-        cid = cond["id"]
-        if cid not in unmitigated_results:
-            t0 = time.time()
-            slice_avg, per_patient, patient_sum = evaluate_test_pipeline(
-                model=model, loader=test_loader, device=device, condition=cond, preproc_mode="none", apply_postproc=False
-            )
-            dt = time.time() - t0
-            unmitigated_results[cid] = {
-                "slice_level": slice_avg,
-                "per_patient": per_patient,
-                "patient_summary": patient_sum,
-            }
-            print(f"  [{cid:<28}] Slice FG Dice: {slice_avg['mean_dice_foreground']:.4f} | Patient 3D Dice: {patient_sum['mean_dice_foreground']['mean']:.4f} [{dt:.1f}s]", flush=True)
-
-    # Check for existing mitigation results JSON to enable resumability
-    out_json_path = PROJECT_ROOT / "reports" / "mitigation_results.json"
-    existing_results: Dict[str, Any] = {}
-    if out_json_path.exists():
-        try:
-            with open(out_json_path, "r", encoding="utf-8") as f:
-                existing_results = json.load(f)
-        except Exception:
-            existing_results = {}
-
-    def save_checkpoint(results_dict):
+    def save_checkpoint(results_dict: Dict[str, Any]) -> None:
         def sanitize(obj):
             if isinstance(obj, (np.floating, float)):
                 return float(obj)
@@ -241,15 +267,44 @@ def main():
                 return [sanitize(v) for v in obj]
             return obj
 
+        results_dict["provenance"] = expected_provenance
+        out_json_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_json_path, "w", encoding="utf-8") as f:
             json.dump(sanitize(results_dict), f, indent=2)
+
+    # First, load or evaluate Unmitigated Baseline across all 10 conditions
+    print("--- 1. Evaluating Unmitigated Baseline (Reference Model) ---", flush=True)
+    unmitigated_results: Dict[str, Any] = existing_results.get("unmitigated", {})
+    for cond in CONDITIONS:
+        cid = cond["id"]
+        if cid in unmitigated_results and is_cache_reused:
+            fg_slice = unmitigated_results[cid]["slice_level"]["mean_dice_foreground"]
+            fg_patient = unmitigated_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
+            print(f"  [{cid:<28}] Slice FG Dice: {fg_slice:.4f} | Patient 3D Dice: {fg_patient:.4f} [Cached]", flush=True)
+            continue
+
+        t0 = time.time()
+        slice_avg, per_patient, patient_sum = evaluate_test_pipeline(
+            model=model, loader=test_loader, device=device, condition=cond, preproc_mode="none", apply_postproc=False
+        )
+        dt = time.time() - t0
+        unmitigated_results[cid] = {
+            "slice_level": slice_avg,
+            "per_patient": per_patient,
+            "patient_summary": patient_sum,
+        }
+        fg_slice = slice_avg["mean_dice_foreground"]
+        fg_patient = patient_sum["mean_dice_foreground"]["mean"]
+        print(f"  [{cid:<28}] Slice FG Dice: {fg_slice:.4f} | Patient 3D Dice: {fg_patient:.4f} [{dt:.1f}s]", flush=True)
+        existing_results["unmitigated"] = unmitigated_results
+        save_checkpoint(existing_results)
 
     # Second, run Post-Processing Alone across all 10 conditions
     print("\n--- 2. Evaluating Post-Processing Alone (LCC + Hole Filling) ---", flush=True)
     postproc_results: Dict[str, Any] = existing_results.get("postproc_alone", {})
     for cond in CONDITIONS:
         cid = cond["id"]
-        if cid in postproc_results:
+        if cid in postproc_results and is_cache_reused:
             new_dice = postproc_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             unmit_dice = unmitigated_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             delta = new_dice - unmit_dice
@@ -279,7 +334,7 @@ def main():
     clahe_results: Dict[str, Any] = existing_results.get("clahe_alone", {})
     for cond in CONDITIONS:
         cid = cond["id"]
-        if cid in clahe_results:
+        if cid in clahe_results and is_cache_reused:
             new_dice = clahe_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             unmit_dice = unmitigated_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             delta = new_dice - unmit_dice
@@ -309,7 +364,7 @@ def main():
     noise_conds = [c for c in CONDITIONS if c["family"] in ("gaussian_noise", "clean")]
     for cond in noise_conds:
         cid = cond["id"]
-        if cid in median_results:
+        if cid in median_results and is_cache_reused:
             new_dice = median_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             unmit_dice = unmitigated_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             delta = new_dice - unmit_dice
@@ -339,7 +394,7 @@ def main():
     contrast_conds = [c for c in CONDITIONS if c["family"] in ("contrast_reduction", "clean")]
     for cond in contrast_conds:
         cid = cond["id"]
-        if cid in combined_contrast_results:
+        if cid in combined_contrast_results and is_cache_reused:
             new_dice = combined_contrast_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             unmit_dice = unmitigated_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             delta = new_dice - unmit_dice
@@ -368,7 +423,7 @@ def main():
     combined_noise_results: Dict[str, Any] = existing_results.get("combined_noise", {})
     for cond in noise_conds:
         cid = cond["id"]
-        if cid in combined_noise_results:
+        if cid in combined_noise_results and is_cache_reused:
             new_dice = combined_noise_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             unmit_dice = unmitigated_results[cid]["patient_summary"]["mean_dice_foreground"]["mean"]
             delta = new_dice - unmit_dice
@@ -391,7 +446,6 @@ def main():
         print(f"  [{cid:<28}] Patient 3D Dice: {new_dice:.4f} (Delta vs Unmitigated: {delta:+.4f}) [{dt:.1f}s]", flush=True)
         existing_results["combined_noise"] = combined_noise_results
         save_checkpoint(existing_results)
-        print(f"  [{cid:<28}] Patient 3D Dice: {new_dice:.4f} (Delta vs Unmitigated: {delta:+.4f}) [{dt:.1f}s]", flush=True)
 
     # 4. Compile Comprehensive Tabular & Statistical Comparisons
     # We compare each mitigated arm against the exact unmitigated corrupted baseline
@@ -403,8 +457,9 @@ def main():
     contrast_comparison_rows = []
     contrast_eval_keys = ["contrast_reduction_severe", "contrast_reduction_moderate", "contrast_reduction_mild"]
     
-    # Store all comparison records
+    # Store all comparison records including cryptographic provenance
     all_ablation_summary: Dict[str, Any] = {
+        "provenance": expected_provenance,
         "unmitigated": unmitigated_results,
         "postproc_alone": postproc_results,
         "clahe_alone": clahe_results,
@@ -414,7 +469,6 @@ def main():
     }
 
     # Save complete JSON
-    out_json_path = PROJECT_ROOT / "reports" / "mitigation_results.json"
     # Helper to serialize numpy floats
     def sanitize_for_json(obj):
         if isinstance(obj, (np.floating, float)):
@@ -429,6 +483,7 @@ def main():
             return [sanitize_for_json(v) for v in obj]
         return obj
 
+    out_json_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_json_path, "w", encoding="utf-8") as f:
         json.dump(sanitize_for_json(all_ablation_summary), f, indent=2)
     print(f"Written complete JSON results to: {out_json_path}")
@@ -572,7 +627,7 @@ def main():
         })
 
     # Write CSV
-    out_csv_path = PROJECT_ROOT / "reports" / "mitigation_results.csv"
+    out_csv_path.parent.mkdir(parents=True, exist_ok=True)
     if csv_rows:
         keys = list(csv_rows[0].keys())
         with open(out_csv_path, "w", newline="", encoding="utf-8") as f:

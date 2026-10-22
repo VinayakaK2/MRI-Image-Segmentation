@@ -17,7 +17,12 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation.patient_metrics import adjust_pvalues_holm
+from src.evaluation.patient_metrics import adjust_pvalues_holm, classify_significance
+from src.utils.provenance import (
+    CACHE_SCHEMA_VERSION,
+    build_cache_provenance,
+    validate_cache_provenance,
+)
 
 
 def step_down_holm(pvals):
@@ -74,6 +79,26 @@ def main():
             if curr_pts != p_ids:
                 print(f"FATAL: Patient ID mismatch in {arm_name}/{cid}: expected {p_ids}, found {curr_pts}")
                 sys.exit(1)
+
+    print("=" * 80)
+    print(" AUDIT 0: CRYPTOGRAPHIC CACHE PROVENANCE VERIFICATION")
+    print("=" * 80)
+
+    ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
+    if not ckpt_path.exists():
+        ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
+    cfg_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
+    man_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
+
+    expected_prov = build_cache_provenance(ckpt_path, cfg_path, man_path, CACHE_SCHEMA_VERSION)
+    is_prov_valid, prov_reason = validate_cache_provenance(data, expected_prov)
+    if is_prov_valid:
+        print(f"PASS: Provenance metadata verified (Schema {CACHE_SCHEMA_VERSION}).")
+        print(f"  - Checkpoint SHA-256: {expected_prov['checkpoint_sha256']}")
+        print(f"  - Config SHA-256:     {expected_prov['config_sha256']}")
+        print(f"  - Manifest SHA-256:   {expected_prov['manifest_sha256']}")
+    else:
+        print(f"NOTE: Cache provenance validation: {prov_reason}")
 
     print("=" * 80)
     print(" AUDIT 1: INVESTIGATION OF IDENTICAL CLAHE SCORES ACROSS CONTRAST CONDITIONS")
@@ -163,9 +188,14 @@ def main():
         t_adj = t_adj_post[i]
         w_raw = post_w_p[i]
         w_adj = w_adj_post[i]
-        sig = "Significant" if w_adj < 0.05 or t_adj < 0.05 else "Not Significant"
-        if (w_raw < 0.05 or t_raw < 0.05) and sig == "Not Significant":
-            sig = "Nominal only (unadj)"
+        sig = classify_significance(
+            paired_t_pvalue_raw=t_raw,
+            paired_t_pvalue_holm=t_adj,
+            wilcoxon_pvalue_raw=w_raw,
+            wilcoxon_pvalue_holm=w_adj,
+            alpha=0.05,
+            policy="primary_t_test",
+        )
         print(f"{cid:28s} | {t_raw:12.4e} | {t_adj:12.4e} | {w_raw:12.4e} | {w_adj:12.4e} | {sig:22s}")
 
     print("\n" + "=" * 80)
@@ -207,7 +237,14 @@ def main():
         t_adj = t_adj_clahe[i]
         w_raw = clahe_w_p[i]
         w_adj = w_adj_clahe[i]
-        sig = "Significant" if w_adj < 0.05 or t_adj < 0.05 else "Not Significant"
+        sig = classify_significance(
+            paired_t_pvalue_raw=t_raw,
+            paired_t_pvalue_holm=t_adj,
+            wilcoxon_pvalue_raw=w_raw,
+            wilcoxon_pvalue_holm=w_adj,
+            alpha=0.05,
+            policy="primary_t_test",
+        )
         print(f"{cid:28s} | {t_raw:12.4e} | {t_adj:12.4e} | {w_raw:12.4e} | {w_adj:12.4e} | {sig:22s}")
 
     print("\nFamily 3: Combined (CLAHE + Post-Processing) on Contrast (m=3 family):")
@@ -240,7 +277,14 @@ def main():
         t_adj = t_adj_comb[i]
         w_raw = comb_w_p[i]
         w_adj = w_adj_comb[i]
-        sig = "Significant" if w_adj < 0.05 or t_adj < 0.05 else "Not Significant"
+        sig = classify_significance(
+            paired_t_pvalue_raw=t_raw,
+            paired_t_pvalue_holm=t_adj,
+            wilcoxon_pvalue_raw=w_raw,
+            wilcoxon_pvalue_holm=w_adj,
+            alpha=0.05,
+            policy="primary_t_test",
+        )
         print(f"{cid:28s} | {t_raw:12.4e} | {t_adj:12.4e} | {w_raw:12.4e} | {w_adj:12.4e} | {sig:22s}")
 
     print("\n" + "=" * 80)
@@ -282,7 +326,14 @@ def main():
         t_adj = t_adj_combn[i]
         w_raw = combn_w_p[i]
         w_adj = w_adj_combn[i]
-        sig = "Significant" if w_adj < 0.05 or t_adj < 0.05 else "Not Significant"
+        sig = classify_significance(
+            paired_t_pvalue_raw=t_raw,
+            paired_t_pvalue_holm=t_adj,
+            wilcoxon_pvalue_raw=w_raw,
+            wilcoxon_pvalue_holm=w_adj,
+            alpha=0.05,
+            policy="primary_t_test",
+        )
         print(f"{cid:28s} | {t_raw:12.4e} | {t_adj:12.4e} | {w_raw:12.4e} | {w_adj:12.4e} | {sig:22s}")
 
     print("\n" + "=" * 80)
@@ -366,13 +417,21 @@ def main():
             if abs(csv_wp_holm - calc_wp_holm) / max(calc_wp_holm, 1e-15) > 1e-3:
                 discrepancies.append(f"w_holm mismatch {fname} {cid}: CSV {csv_wp_holm} vs Calc {calc_wp_holm}")
 
-            # Check FWER significance decision
-            calc_sig = "Significant" if (calc_wp_holm < 0.05 or calc_tp_holm < 0.05) else "Not Significant"
-            if calc_sig == "Not Significant" and (calc_wp_raw < 0.05 or calc_tp_raw < 0.05):
-                calc_sig = "Nominal Only (Unadjusted)"
+            # Check FWER significance decision under pre-specified primary paired t-test policy
+            calc_sig = classify_significance(
+                paired_t_pvalue_raw=calc_tp_raw,
+                paired_t_pvalue_holm=calc_tp_holm,
+                wilcoxon_pvalue_raw=calc_wp_raw,
+                wilcoxon_pvalue_holm=calc_wp_holm,
+                alpha=0.05,
+                policy="primary_t_test",
+            )
             csv_sig = row.get("significance_fwer", "")
             if csv_sig.lower() != calc_sig.lower():
                 discrepancies.append(f"Significance label mismatch {fname} {cid}: CSV '{csv_sig}' vs Calc '{calc_sig}'")
+
+    if not is_prov_valid:
+        discrepancies.append(f"Mitigation results cache provenance invalid: {prov_reason}")
 
     if discrepancies:
         print(f"\nDISCREPANCIES DETECTED ({len(discrepancies)}):")
