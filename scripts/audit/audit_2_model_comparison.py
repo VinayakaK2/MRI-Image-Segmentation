@@ -173,7 +173,7 @@ def run_audit_2():
         print(f"{c:30s} | {m3:.4f} +/- {s3:.4f}        | {m50:.4f} +/- {s50:.4f}         | {d:+10.4f} | {r:+11.2f}%")
 
     checkpoints_matched = (hash_3ep == expected_3ep) and (hash_50ep == expected_50ep)
-    cohort_matched = cohort_identical and (len(pts_3ep) == 15)
+    cohort_matched = cohort_identical and (len(pts_3ep) == 15) and slices_identical
 
     if not checkpoints_matched:
         audit_verdict = "FAIL"

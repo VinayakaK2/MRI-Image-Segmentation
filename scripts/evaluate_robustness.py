@@ -793,7 +793,9 @@ def main() -> None:
         corruption_registry = extract_corruption_registry(cfg)
         if corruption_registry and cond["family"] in corruption_registry:
             if cond["severity"] in corruption_registry[cond["family"]]:
-                cond["param"] = corruption_registry[cond["family"]][cond["severity"]]
+                new_val = corruption_registry[cond["family"]][cond["severity"]]
+                cond["param_value"] = new_val
+                cond["param"] = new_val
 
         slice_avg, per_patient, patient_summary, rep_samples = evaluate_condition(
             model=model,

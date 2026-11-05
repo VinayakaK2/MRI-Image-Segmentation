@@ -67,6 +67,8 @@ def main():
     parser.add_argument("--results-json", type=str, default=str(PROJECT_ROOT / "reports" / "mitigation_results.json"), help="Path to results JSON")
     parser.add_argument("--results-csv", type=str, default=str(PROJECT_ROOT / "reports" / "mitigation_results.csv"), help="Path to results CSV")
     parser.add_argument("--checkpoint", type=str, default=None, help="Path to checkpoint")
+    parser.add_argument("--config", type=str, default=None, help="Optional path to model config YAML")
+    parser.add_argument("--manifest", type=str, default=None, help="Optional path to dataset manifest JSON")
     parser.add_argument("--output-json", type=str, default=None, help="Optional path for audit summary JSON")
     parser.add_argument("--output-md", type=str, default=None, help="Optional path for audit summary Markdown")
     args = parser.parse_args()
@@ -103,8 +105,19 @@ def main():
         ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
     else:
         ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
-    cfg_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
-    man_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
+    if args.config:
+        cfg_path = Path(args.config)
+    elif "provenance" in data and "config_path" in data["provenance"] and Path(data["provenance"]["config_path"]).exists():
+        cfg_path = Path(data["provenance"]["config_path"])
+    else:
+        cfg_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
+
+    if args.manifest:
+        man_path = Path(args.manifest)
+    elif "provenance" in data and "manifest_path" in data["provenance"] and Path(data["provenance"]["manifest_path"]).exists():
+        man_path = Path(data["provenance"]["manifest_path"])
+    else:
+        man_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
 
     expected_prov = build_cache_provenance(ckpt_path, cfg_path, man_path, CACHE_SCHEMA_VERSION)
     is_prov_valid, prov_reason = validate_cache_provenance(data, expected_prov)

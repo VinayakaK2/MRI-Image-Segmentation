@@ -203,8 +203,14 @@ def run_baseline_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
     best_filename = f"best_model_{suffix}.pt" if suffix else "best_model.pt"
     best_model_path = checkpoint_dir / best_filename
     if not best_model_path.exists():
-        last_filename = f"last_checkpoint_{suffix}.pt" if suffix else "last_checkpoint.pt"
-        best_model_path = checkpoint_dir / last_filename
+        if hasattr(trainer, "resumed_best_checkpoint") and Path(trainer.resumed_best_checkpoint).exists():
+            best_model_path = Path(trainer.resumed_best_checkpoint)
+            print(f"Resumed training did not exceed previous validation best; evaluating resumed best weights: {best_model_path}")
+        elif args.resume is not None and Path(args.resume).exists():
+            best_model_path = Path(args.resume)
+        else:
+            last_filename = f"last_checkpoint_{suffix}.pt" if suffix else "last_checkpoint.pt"
+            best_model_path = checkpoint_dir / last_filename
 
     print(f"\nLoading best checkpoint for final evaluation: {best_model_path}")
     checkpoint = torch.load(best_model_path, map_location=device, weights_only=False)

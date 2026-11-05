@@ -233,6 +233,14 @@ class Trainer:
         self.best_val_dice = float(checkpoint.get("best_val_dice", -1.0))
         self.best_epoch = int(checkpoint.get("best_epoch", checkpoint.get("epoch", completed_epoch)))
 
+        # Resolve corresponding best checkpoint in the same directory to keep resumed best weights
+        resumed_best_candidate = ckpt_p.parent / f"best_model_{self.checkpoint_suffix}.pt" if self.checkpoint_suffix else ckpt_p.parent / "best_model.pt"
+        if not resumed_best_candidate.exists():
+            resumed_best_candidate = ckpt_p.parent / "best_model.pt"
+        if not resumed_best_candidate.exists():
+            resumed_best_candidate = ckpt_p
+        self.resumed_best_checkpoint = str(resumed_best_candidate)
+
         # 6. Preload training history if available
         if "history" in checkpoint and isinstance(checkpoint["history"], list):
             self.history = [
