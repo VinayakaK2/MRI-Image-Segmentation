@@ -269,9 +269,19 @@ def main():
         plot_path = PROJECT_ROOT / "reports" / "mitigation_comparison.png"
 
     # Resolve model checkpoint
-    ckpt_path = args.checkpoint or (PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt")
-    if not ckpt_path.exists():
-        ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
+    if args.checkpoint is not None:
+        ckpt_path = Path(args.checkpoint)
+        if not ckpt_path.exists():
+            raise FileNotFoundError(f"Explicitly specified checkpoint not found at: {ckpt_path}")
+    else:
+        ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
+        if not ckpt_path.exists():
+            if (PROJECT_ROOT / "checkpoints" / "50epochs" / "best_model_50epochs.pt").exists():
+                ckpt_path = PROJECT_ROOT / "checkpoints" / "50epochs" / "best_model_50epochs.pt"
+            elif (PROJECT_ROOT / "checkpoints" / "best_model.pt").exists():
+                ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
+            else:
+                raise FileNotFoundError(f"Default checkpoint not found at: {ckpt_path}")
 
     config_path = args.config or (PROJECT_ROOT / "configs" / "baseline_unet.yaml")
     manifest_path = args.manifest or (PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json")
@@ -316,10 +326,16 @@ def main():
     model.eval()
 
     # 2. Load held-out test split
+    target_size = tuple(cfg.get("dataset", {}).get("target_spatial_size", [256, 256]))
+    norm_method = cfg.get("preprocessing", {}).get("baseline", {}).get("normalization", "z_score")
+    clip_percentiles = tuple(cfg.get("preprocessing", {}).get("baseline", {}).get("clip_percentiles", [0.5, 99.5]))
+
     test_dataset = ACDCSliceDataset(
         manifest_path=manifest_path,
         split="test",
-        target_spatial_size=tuple(cfg["dataset"]["target_spatial_size"]),
+        target_spatial_size=target_size,
+        normalization_method=norm_method,
+        clip_percentiles=clip_percentiles,
     )
     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=acdc_collate_fn)
     print(f"Loaded held-out test split: {len(test_dataset)} slices across 15 patients.\n", flush=True)
@@ -1025,6 +1041,46 @@ def main():
             writer.writeheader()
             writer.writerows(slice_level_rows)
         print(f"Written slice-level CSV ({len(slice_level_rows)} rows) to: {sl_csv_path}")
+    elif sl_csv_path.exists():
+        print(f"Preserved existing slice-level CSV on cache hit: {sl_csv_path}")
+    else:
+        print("-> Cache hit active but slice_level_results.csv missing. Regenerating slice records...", flush=True)
+        for arm_name, pmode, apost, arm_label in [
+            ("unmitigated", "none", False, "Unmitigated Baseline"),
+            ("postproc_alone", "none", True, "Post-Processing Alone (LCC+HoleFill)"),
+            ("clahe_alone", "clahe", False, "CLAHE Alone (clip=0.01)"),
+            ("median_alone", "median", False, "Median Alone (size=3)"),
+            ("combined_contrast", "clahe", True, "Combined (CLAHE + Post-Processing)"),
+            ("combined_noise", "median", True, "Combined (Median + Post-Processing)"),
+        ]:
+            eval_conds = CONDITIONS
+            if arm_name == "combined_contrast":
+                eval_conds = [c for c in CONDITIONS if c["family"] == "contrast_reduction"]
+            elif arm_name == "combined_noise":
+                eval_conds = [c for c in CONDITIONS if c["family"] == "gaussian_noise"]
+            for cond in eval_conds:
+                cid = cond["id"]
+                _, _, _, s_recs, _ = evaluate_test_pipeline(
+                    model=model, loader=test_loader, device=device, condition=cond, preproc_mode=pmode, apply_postproc=apost
+                )
+                for sl in s_recs:
+                    slice_level_rows.append({
+                        "intervention_arm": arm_label,
+                        "condition_id": cid,
+                        "patient_id": sl["patient_id"],
+                        "slice_idx": sl["slice_idx"],
+                        "slice_id": sl["slice_id"],
+                        "dice_foreground": round(sl["dice_foreground"], 4),
+                        "dice_rv": round(sl["dice_rv"], 4),
+                        "dice_myo": round(sl["dice_myo"], 4),
+                        "dice_lv": round(sl["dice_lv"], 4),
+                    })
+        if slice_level_rows:
+            with open(sl_csv_path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=list(slice_level_rows[0].keys()))
+                writer.writeheader()
+                writer.writerows(slice_level_rows)
+            print(f"Regenerated and wrote slice-level CSV ({len(slice_level_rows)} rows) to: {sl_csv_path}")
 
     # Detailed Statistical Tests CSV (19 rows)
     stat_test_rows: List[Dict[str, Any]] = []
@@ -1320,6 +1376,30 @@ def main():
 
     # For each representative sample index
     num_samples = len(rep_samples_map.get("unmitigated", {}).get("clean_baseline", []))
+    if num_samples == 0:
+        print("-> Cache hit active: regenerating representative slice samples for overlays...", flush=True)
+        cond_dict_by_id = {c["id"]: c for c in CONDITIONS}
+        rep_cond_configs = [
+            ("unmitigated", "clean_baseline", "none", False),
+            ("unmitigated", "contrast_reduction_severe", "none", False),
+            ("unmitigated", "gaussian_noise_severe", "none", False),
+            ("unmitigated", "gaussian_blur_severe", "none", False),
+            ("postproc_alone", "clean_baseline", "none", True),
+            ("postproc_alone", "gaussian_blur_severe", "none", True),
+            ("combined_contrast", "contrast_reduction_severe", "clahe", True),
+            ("combined_noise", "gaussian_noise_severe", "median", True),
+        ]
+        for arm_name, cid, pmode, apost in rep_cond_configs:
+            if cid in cond_dict_by_id:
+                cond = cond_dict_by_id[cid]
+                _, _, _, _, s_reps = evaluate_test_pipeline(
+                    model=model, loader=test_loader, device=device, condition=cond, preproc_mode=pmode, apply_postproc=apost, rep_indices=REPRESENTATIVE_BATCH_INDICES
+                )
+                if arm_name not in rep_samples_map:
+                    rep_samples_map[arm_name] = {}
+                rep_samples_map[arm_name][cid] = s_reps
+        num_samples = len(rep_samples_map.get("unmitigated", {}).get("clean_baseline", []))
+
     for s_idx in range(num_samples):
         s_clean = rep_samples_map["unmitigated"]["clean_baseline"][s_idx]
         p_id = s_clean["patient_id"]

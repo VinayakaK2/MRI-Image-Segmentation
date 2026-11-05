@@ -232,7 +232,8 @@ def run_baseline_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
         "best_epoch": train_summary["best_epoch"],
         "best_val_foreground_dice": train_summary["best_val_foreground_dice"],
         "resumed_from": getattr(trainer, "resumed_from", None),
-        "total_completed_epochs": max_epochs,
+        "total_completed_epochs": train_summary.get("total_completed_epochs", max_epochs),
+        "target_max_epochs": max_epochs,
         "test_metrics": test_metrics,
         "config": cfg,
     }

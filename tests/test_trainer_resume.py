@@ -159,3 +159,91 @@ def test_checkpoint_suffix_isolation(tmp_path: Path, dummy_loaders, minimal_conf
     # New suffix checkpoint exists
     new_best = ckpt_dir / "best_model_50epochs.pt"
     assert new_best.exists()
+
+
+def test_resume_restores_best_epoch_and_patience(tmp_path: Path, dummy_loaders, minimal_config):
+    """Verifies that resuming restores the recorded best_epoch and patience counter correctly."""
+    train_loader, val_loader = dummy_loaders
+    ckpt_dir = tmp_path / "checkpoints"
+    ckpt_dir.mkdir(parents=True, exist_ok=True)
+    ckpt_path = ckpt_dir / "last_checkpoint.pt"
+
+    model = LightweightUNet2D(in_channels=1, num_classes=4, base_channels=4, depth=2)
+    trainer = Trainer(
+        model=model,
+        train_loader=train_loader,
+        val_loader=val_loader,
+        config=minimal_config,
+        device=torch.device("cpu"),
+        checkpoint_dir=ckpt_dir,
+        report_dir=tmp_path / "reports",
+    )
+
+    # Simulate checkpoint saved at epoch 5 where best epoch was epoch 3
+    state = {
+        "epoch": 5,
+        "best_epoch": 3,
+        "best_val_dice": 0.85,
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": trainer.optimizer.state_dict(),
+        "scheduler_state_dict": trainer.scheduler.state_dict(),
+    }
+    torch.save(state, ckpt_path)
+
+    # Resume in new trainer
+    trainer2 = Trainer(
+        model=LightweightUNet2D(in_channels=1, num_classes=4, base_channels=4, depth=2),
+        train_loader=train_loader,
+        val_loader=val_loader,
+        config=minimal_config,
+        device=torch.device("cpu"),
+        checkpoint_dir=ckpt_dir,
+        report_dir=tmp_path / "reports",
+    )
+    resumed_epoch = trainer2.resume_from_checkpoint(ckpt_path)
+    assert resumed_epoch == 5
+    assert trainer2.best_epoch == 3
+    assert trainer2.patience_counter == 2  # 5 - 3
+
+
+def test_resume_restores_rng_and_scheduler_horizon(tmp_path: Path, dummy_loaders, minimal_config):
+    """Verifies that RNG state is saved/restored and CosineAnnealingLR horizon is recalibrated."""
+    train_loader, val_loader = dummy_loaders
+    ckpt_dir = tmp_path / "checkpoints"
+    report_dir = tmp_path / "reports"
+
+    trainer1 = Trainer(
+        model=LightweightUNet2D(in_channels=1, num_classes=4, base_channels=4, depth=2),
+        train_loader=train_loader,
+        val_loader=val_loader,
+        config=minimal_config,
+        device=torch.device("cpu"),
+        checkpoint_dir=ckpt_dir,
+        report_dir=report_dir,
+    )
+    # Train 1 epoch
+    summary = trainer1.train(max_epochs=1)
+    assert "total_completed_epochs" in summary
+    assert summary["total_completed_epochs"] == 1
+
+    saved_ckpt = ckpt_dir / "last_checkpoint.pt"
+    ckpt_data = torch.load(saved_ckpt, map_location="cpu", weights_only=False)
+    assert "rng_state" in ckpt_data
+    assert "torch" in ckpt_data["rng_state"]
+
+    # Resume and extend horizon to 20 epochs
+    trainer2 = Trainer(
+        model=LightweightUNet2D(in_channels=1, num_classes=4, base_channels=4, depth=2),
+        train_loader=train_loader,
+        val_loader=val_loader,
+        config=minimal_config,
+        device=torch.device("cpu"),
+        checkpoint_dir=ckpt_dir,
+        report_dir=report_dir,
+    )
+    trainer2.resume_from_checkpoint(saved_ckpt)
+    assert hasattr(trainer2.scheduler, "T_max")
+    old_tmax = trainer2.scheduler.T_max
+
+    trainer2.train(max_epochs=20, start_epoch=2)
+    assert trainer2.scheduler.T_max == 20

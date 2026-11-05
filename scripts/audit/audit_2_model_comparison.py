@@ -172,16 +172,30 @@ def run_audit_2():
         }
         print(f"{c:30s} | {m3:.4f} +/- {s3:.4f}        | {m50:.4f} +/- {s50:.4f}         | {d:+10.4f} | {r:+11.2f}%")
 
-    audit_2_result = {
-        "verdict": "PARTIALLY VERIFIED",  # Because prompt cited misattributed numbers (0.5794, 0.6121, 0.0886), but underlying repos/checkpoints are 100% fair and verified
-        "reason_for_verdict": (
+    checkpoints_matched = (hash_3ep == expected_3ep) and (hash_50ep == expected_50ep)
+    cohort_matched = cohort_identical and (len(pts_3ep) == 15)
+
+    if not checkpoints_matched:
+        audit_verdict = "FAIL"
+        audit_reason = "Checkpoint verification failed: one or more checkpoint SHA-256 hashes do not match expected values."
+    elif not cohort_matched:
+        audit_verdict = "FAIL"
+        audit_reason = "Cohort verification failed: test patient lists or total slice counts mismatch between model runs."
+    else:
+        # Prompt cited transcription errors (0.5794, 0.6121, 0.0886), while underlying repo artifacts are 100% fair and verified
+        audit_verdict = "PARTIALLY VERIFIED"
+        audit_reason = (
             "The evaluation methodology between 3-epoch and 50-epoch checkpoints is 100% fair and consistent "
             "(identical 15-patient test cohort, 131 slices, preprocessing, z-score normalization, seed, and 3D metric formula). "
             "However, the prompt's cited 3-epoch table values (0.5794 severe contrast, 0.6121 severe blur, 0.0886 std) "
             "were transcription errors from earlier markdown text rather than true repository ground truth. "
             "Under true repository evidence (reports/robustness_results.json), the 3-epoch baseline collapsed to 0.0405 under severe contrast, "
             "meaning the 50-epoch model's improvement (+0.7753) is even more dramatic than previously claimed."
-        ),
+        )
+
+    audit_2_result = {
+        "verdict": audit_verdict,
+        "reason_for_verdict": audit_reason,
         "checkpoints": {
             "3_epoch": {"path": str(ckpt_3ep_path), "sha256": hash_3ep, "matches_expected": hash_3ep == expected_3ep},
             "50_epoch": {"path": str(ckpt_50ep_path), "sha256": hash_50ep, "matches_expected": hash_50ep == expected_50ep},

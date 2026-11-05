@@ -3,9 +3,11 @@
 import json
 import os
 import shutil
+import random
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+import numpy as np
 import torch
 import torch.nn as nn
 from torch.optim import AdamW
@@ -203,14 +205,33 @@ class Trainer:
             self.resumed_with_scheduler = False
             print("-> Warning: Checkpoint does not contain scheduler_state_dict. Scheduler initialized fresh.")
 
-        # 4. Restore completed epoch
+        # 4. Restore RNG state if present
+        if "rng_state" in checkpoint and checkpoint["rng_state"] is not None:
+            rng = checkpoint["rng_state"]
+            if "torch" in rng and rng["torch"] is not None:
+                t_state = rng["torch"]
+                if isinstance(t_state, torch.Tensor):
+                    t_state = t_state.cpu()
+                torch.set_rng_state(t_state)
+            if "cuda" in rng and rng["cuda"] is not None and torch.cuda.is_available():
+                try:
+                    torch.cuda.set_rng_state_all(rng["cuda"])
+                except Exception as err:
+                    print(f"-> Warning: Failed to restore CUDA RNG state: {err}")
+            if "numpy" in rng and rng["numpy"] is not None:
+                np.random.set_state(rng["numpy"])
+            if "python" in rng and rng["python"] is not None:
+                random.setstate(rng["python"])
+            print("-> RNG state restored successfully.")
+
+        # 5. Restore completed epoch
         completed_epoch = int(checkpoint.get("epoch", 0))
         self.resumed_epoch = completed_epoch
         self.resumed_from = str(ckpt_p)
 
         # 5. Restore best validation metrics and best epoch
         self.best_val_dice = float(checkpoint.get("best_val_dice", -1.0))
-        self.best_epoch = int(checkpoint.get("epoch", completed_epoch))
+        self.best_epoch = int(checkpoint.get("best_epoch", checkpoint.get("epoch", completed_epoch)))
 
         # 6. Preload training history if available
         if "history" in checkpoint and isinstance(checkpoint["history"], list):
@@ -265,6 +286,12 @@ class Trainer:
             "val_metrics": val_metrics,
             "best_val_dice": self.best_val_dice,
             "best_epoch": self.best_epoch,
+            "rng_state": {
+                "torch": torch.get_rng_state(),
+                "cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
+                "numpy": np.random.get_state(),
+                "python": random.getstate(),
+            },
             "config": self.config,
             "seed": self.config.get("project", {}).get("seed", 42),
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -315,6 +342,12 @@ class Trainer:
         """Runs the complete training and validation cycle with early stopping and best checkpoint selection."""
         epochs_to_run = max_epochs if max_epochs is not None else self.max_epochs
         start_ep = start_epoch if start_epoch is not None else (self.resumed_epoch + 1)
+
+        # Recalibrate CosineAnnealingLR horizon if target exceeds checkpoint T_max
+        if hasattr(self.scheduler, "T_max") and self.scheduler.T_max < epochs_to_run:
+            old_tmax = self.scheduler.T_max
+            self.scheduler.T_max = epochs_to_run
+            print(f"-> Recalibrated CosineAnnealingLR T_max from {old_tmax} to target horizon {epochs_to_run}.")
         print(f"Starting training on device: {self.device} (Epochs: {start_ep}..{epochs_to_run}, Total Target: {epochs_to_run})")
 
         start_time = time.time()
@@ -378,23 +411,22 @@ class Trainer:
         total_elapsed = time.time() - start_time
         print(f"Training completed in {total_elapsed:.1f}s. Best Val FG Dice: {self.best_val_dice:.4f} at Epoch {self.best_epoch}.")
 
+        actual_completed = self.history[-1]["epoch"] if self.history else self.resumed_epoch
+        train_summary = {
+            "best_epoch": self.best_epoch,
+            "best_val_foreground_dice": self.best_val_dice,
+            "total_time_seconds": total_elapsed,
+            "total_completed_epochs": actual_completed,
+            "history": self.history,
+        }
+
         # Save training history JSON respecting suffix
         history_filename = f"training_history_{self.checkpoint_suffix}.json" if self.checkpoint_suffix else "training_history.json"
         history_path = self.report_dir / history_filename
         with open(history_path, "w", encoding="utf-8") as f:
-            json.dump({
-                "best_epoch": self.best_epoch,
-                "best_val_foreground_dice": self.best_val_dice,
-                "total_time_seconds": total_elapsed,
-                "history": self.history,
-            }, f, indent=2)
+            json.dump(train_summary, f, indent=2)
 
-        return {
-            "best_epoch": self.best_epoch,
-            "best_val_foreground_dice": self.best_val_dice,
-            "total_time_seconds": total_elapsed,
-            "history": self.history,
-        }
+        return train_summary
 
     def evaluate_dataset(self, loader: DataLoader) -> Dict[str, float]:
         """Evaluates model performance over an arbitrary DataLoader (e.g. held-out test set)."""

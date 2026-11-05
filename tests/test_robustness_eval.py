@@ -105,3 +105,33 @@ def test_evaluate_robustness_cli_parser() -> None:
     ])
     assert args.output_dir == "experiments/phase4_robustness_50epoch_best_epoch44"
     assert args.experiment_id == "phase4_robustness_50epoch_best_epoch44"
+
+
+def test_evaluate_robustness_rejects_missing_explicit_checkpoint(tmp_path: Path):
+    """Verifies that evaluate_robustness fails with FileNotFoundError when explicit checkpoint is missing."""
+    import subprocess
+    import sys
+    non_existent = tmp_path / "does_not_exist.pt"
+    cmd = [sys.executable, "scripts/evaluate_robustness.py", "--checkpoint", str(non_existent)]
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    assert proc.returncode != 0
+    assert "Explicitly specified checkpoint not found" in proc.stderr or "FileNotFoundError" in proc.stderr
+
+
+def test_extract_corruption_registry():
+    """Verifies corruption registry extraction from config."""
+    from scripts.evaluate_robustness import extract_corruption_registry
+    cfg = {
+        "corruptions": {
+            "families": [
+                {
+                    "name": "gaussian_noise",
+                    "levels": {"mild": 0.05, "severe": 0.15}
+                }
+            ]
+        }
+    }
+    reg = extract_corruption_registry(cfg)
+    assert reg is not None
+    assert "gaussian_noise" in reg
+    assert reg["gaussian_noise"]["mild"] == 0.05

@@ -129,6 +129,25 @@ CONDITIONS: List[Dict[str, Any]] = [
 REPRESENTATIVE_BATCH_INDICES = [4, 15, 45]
 
 
+
+def extract_corruption_registry(cfg: Dict[str, Any]) -> Optional[Dict[str, Dict[str, float]]]:
+    """Extracts custom corruption parameter levels from configuration dictionary if specified."""
+    corruptions_cfg = cfg.get("corruptions", {})
+    if not corruptions_cfg:
+        return None
+    reg: Dict[str, Dict[str, float]] = {}
+    if "families" in corruptions_cfg and isinstance(corruptions_cfg["families"], list):
+        for fam in corruptions_cfg["families"]:
+            name = fam.get("name")
+            levels = fam.get("levels")
+            if name and isinstance(levels, dict):
+                reg[name] = {k: float(v) for k, v in levels.items()}
+    elif isinstance(corruptions_cfg, dict):
+        for k, v in corruptions_cfg.items():
+            if isinstance(v, dict):
+                reg[k] = {sk: float(sv) for sk, sv in v.items()}
+    return reg if reg else None
+
 def compute_sha256(path: Path) -> str:
     """Computes SHA-256 hash of a file on disk."""
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -141,6 +160,7 @@ def evaluate_condition(
     device: torch.device,
     base_seed: int = 42,
     rep_indices: Optional[List[int]] = None,
+    custom_registry: Optional[Dict[str, Dict[str, float]]] = None,
 ) -> Tuple[Dict[str, float], Dict[str, Dict[str, float]], Dict[str, Dict[str, float]], List[Dict[str, Any]]]:
     """Evaluates the model under a single corruption condition on the test DataLoader."""
     model.eval()
@@ -171,6 +191,7 @@ def evaluate_condition(
                 corruption_name=fam,
                 severity=sev,
                 seed=seed,
+                custom_registry=custom_registry,
             )
 
             logits = model(corrupted_img)
@@ -660,22 +681,34 @@ def main() -> None:
     # 1. Load checkpoint and verify integrity
     ckpt_path = Path(args.checkpoint)
     if not ckpt_path.exists():
-        if Path("checkpoints/50epochs/best_model_50epochs.pt").exists() and "50epoch" in str(ckpt_path).lower():
-            ckpt_path = Path("checkpoints/50epochs/best_model_50epochs.pt")
-        elif Path("checkpoints/best_model_50epochs.pt").exists() and "50epoch" in str(ckpt_path).lower():
-            ckpt_path = Path("checkpoints/best_model_50epochs.pt")
-        elif Path("checkpoints/best_model.pt").exists():
-            ckpt_path = Path("checkpoints/best_model.pt")
-
-    if not ckpt_path.exists():
-        raise FileNotFoundError(f"Checkpoint not found at: {ckpt_path}")
+        is_default = (args.checkpoint == parser.get_default("checkpoint"))
+        if is_default:
+            if Path("checkpoints/50epochs/best_model_50epochs.pt").exists() and "50epoch" in str(ckpt_path).lower():
+                ckpt_path = Path("checkpoints/50epochs/best_model_50epochs.pt")
+            elif Path("checkpoints/best_model_50epochs.pt").exists() and "50epoch" in str(ckpt_path).lower():
+                ckpt_path = Path("checkpoints/best_model_50epochs.pt")
+            elif Path("checkpoints/best_model.pt").exists():
+                ckpt_path = Path("checkpoints/best_model.pt")
+            else:
+                raise FileNotFoundError(f"Default checkpoint not found at: {ckpt_path}")
+        else:
+            raise FileNotFoundError(f"Explicitly specified checkpoint not found at: {ckpt_path}")
 
     ckpt_hash = compute_sha256(ckpt_path)
     print(f"Loading checkpoint: {ckpt_path}")
     print(f"Checkpoint SHA-256: {ckpt_hash}")
 
     checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
-    model = LightweightUNet2D().to(device)
+    model_cfg = cfg.get("model", {})
+    model = LightweightUNet2D(
+        in_channels=model_cfg.get("in_channels", 1),
+        num_classes=model_cfg.get("num_classes", 4),
+        base_channels=model_cfg.get("base_channels", 16),
+        depth=model_cfg.get("depth", 4),
+        dropout=model_cfg.get("dropout", 0.0),
+        use_batchnorm=model_cfg.get("use_batchnorm", True),
+        bilinear_upsample=model_cfg.get("bilinear_upsample", True),
+    ).to(device)
     model.load_state_dict(checkpoint["model_state_dict"])
     model.eval()
     print("Model state loaded and set to eval() mode.")
@@ -757,6 +790,11 @@ def main() -> None:
         d_name = cond["display_name"]
         print(f"\nEvaluating Condition: {d_name}...")
 
+        corruption_registry = extract_corruption_registry(cfg)
+        if corruption_registry and cond["family"] in corruption_registry:
+            if cond["severity"] in corruption_registry[cond["family"]]:
+                cond["param"] = corruption_registry[cond["family"]][cond["severity"]]
+
         slice_avg, per_patient, patient_summary, rep_samples = evaluate_condition(
             model=model,
             loader=test_loader,
@@ -764,6 +802,7 @@ def main() -> None:
             device=device,
             base_seed=seed,
             rep_indices=REPRESENTATIVE_BATCH_INDICES,
+            custom_registry=corruption_registry,
         )
 
         all_results["conditions"][cond_id] = {
