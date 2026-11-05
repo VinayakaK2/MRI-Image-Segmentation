@@ -32,7 +32,9 @@ checkpoints/*
 *.tar.gz
 experiments/*
 !experiments/.gitkeep
+reports/**/*.png
 reports/*.png
+reports/**/*.pdf
 reports/*.pdf
 !reports/.gitkeep
 !reports/*.json
