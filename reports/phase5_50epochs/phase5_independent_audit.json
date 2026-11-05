@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "discrepancies_count": 0,
+  "discrepancies": [],
+  "results_json": "experiments\\phase5_validation_locked_mitigation\\mitigation_results.json",
+  "results_csv": "experiments\\phase5_validation_locked_mitigation\\mitigation_results.csv",
+  "checkpoint_evaluated": "checkpoints\\50epochs\\best_model_50epochs.pt",
+  "provenance_valid": true,
+  "total_comparisons_checked": 19,
+  "contrast_invariance_max_diff": 0.0
+}
