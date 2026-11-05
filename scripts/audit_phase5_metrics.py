@@ -95,27 +95,30 @@ def main():
     print(" AUDIT 0: CRYPTOGRAPHIC CACHE PROVENANCE VERIFICATION")
     print("=" * 80)
 
+    # Resolve provenance artifacts (checkpoint, config, manifest) using CLI flags, recorded results metadata, or defaults
+    prov = data.get("provenance", {}) if isinstance(data.get("provenance"), dict) else {}
     if args.checkpoint:
         ckpt_path = Path(args.checkpoint)
-    elif "provenance" in data and "checkpoint_path" in data["provenance"] and Path(data["provenance"]["checkpoint_path"]).exists():
-        ckpt_path = Path(data["provenance"]["checkpoint_path"])
+    elif "checkpoint_path" in prov and Path(prov["checkpoint_path"]).exists():
+        ckpt_path = Path(prov["checkpoint_path"])
     elif (PROJECT_ROOT / "checkpoints" / "50epochs" / "best_model_50epochs.pt").exists() and ("50epoch" in str(json_path) or "phase5" in str(json_path)):
         ckpt_path = PROJECT_ROOT / "checkpoints" / "50epochs" / "best_model_50epochs.pt"
     elif (PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt").exists():
         ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
     else:
         ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
+
     if args.config:
         cfg_path = Path(args.config)
-    elif "provenance" in data and "config_path" in data["provenance"] and Path(data["provenance"]["config_path"]).exists():
-        cfg_path = Path(data["provenance"]["config_path"])
+    elif "config_path" in prov and Path(prov["config_path"]).exists():
+        cfg_path = Path(prov["config_path"])
     else:
         cfg_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
 
     if args.manifest:
         man_path = Path(args.manifest)
-    elif "provenance" in data and "manifest_path" in data["provenance"] and Path(data["provenance"]["manifest_path"]).exists():
-        man_path = Path(data["provenance"]["manifest_path"])
+    elif "manifest_path" in prov and Path(prov["manifest_path"]).exists():
+        man_path = Path(prov["manifest_path"])
     else:
         man_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
 
