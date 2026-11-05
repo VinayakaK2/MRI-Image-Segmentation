@@ -1,9 +1,11 @@
 """Independent audit of patient-level metrics, relative drops, and Wilcoxon adjustments."""
 
+import argparse
 import json
+from pathlib import Path
 import numpy as np
 import scipy.stats as stats
-from pathlib import Path
+
 
 def step_down_holm(pvals):
     m = len(pvals)
@@ -16,14 +18,26 @@ def step_down_holm(pvals):
         running_max = max(running_max, raw_adj)
         capped = min(1.0, float(running_max))
         res.append((orig_idx, p, mult, raw_adj, capped))
-    
+
     final_adj = [0.0] * m
     for orig_idx, p, mult, raw_adj, capped in res:
         final_adj[orig_idx] = capped
     return final_adj, res
 
+
 def main():
-    json_path = Path("reports/robustness_results.json")
+    parser = argparse.ArgumentParser(description="Audit Phase 4 robustness metrics.")
+    parser.add_argument(
+        "--results-json",
+        type=str,
+        default="reports/robustness_results.json",
+        help="Path to robustness results JSON to audit.",
+    )
+    args = parser.parse_args()
+    json_path = Path(args.results_json)
+    if not json_path.exists():
+        raise FileNotFoundError(f"Robustness results JSON not found: {json_path}")
+
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -88,6 +102,7 @@ def main():
     for c_name, r_w, a_w in zip(cond_names, raw_w, adj_w):
         sig = "Significant" if a_w < 0.05 else "Not Significant"
         print(f"{c_name:30s} | {r_w:14.4e} | {a_w:14.4e} | {sig:18s}")
+
 
 if __name__ == "__main__":
     main()

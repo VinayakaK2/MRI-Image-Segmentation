@@ -53,6 +53,29 @@ def parse_arguments() -> argparse.Namespace:
         default=None,
         help="Device to run training on ('cuda', 'cpu', or 'auto')",
     )
+    parser.add_argument(
+        "--resume",
+        type=str,
+        default=None,
+        help="Optional path to existing checkpoint bundle to resume training state from",
+    )
+    parser.add_argument(
+        "--checkpoint-suffix",
+        type=str,
+        default=None,
+        help="Optional suffix appended to checkpoint and report filenames (e.g. '50epochs')",
+    )
+    parser.add_argument(
+        "--no-early-stopping",
+        action="store_true",
+        help="Disables early stopping to guarantee running all requested epochs",
+    )
+    parser.add_argument(
+        "--patience",
+        type=int,
+        default=None,
+        help="Optional override for early stopping patience",
+    )
     return parser.parse_args()
 
 
@@ -148,6 +171,9 @@ def run_baseline_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
     checkpoint_dir = resolve_project_path(cfg.get("training", {}).get("checkpoint_dir", "checkpoints"))
     report_dir = resolve_project_path(cfg.get("evaluation", {}).get("report_dir", "reports"))
 
+    suffix = args.checkpoint_suffix or ""
+    early_stop_enabled = not args.no_early_stopping
+
     trainer = Trainer(
         model=model,
         train_loader=train_loader,
@@ -156,16 +182,35 @@ def run_baseline_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
         device=device,
         checkpoint_dir=checkpoint_dir,
         report_dir=report_dir,
+        checkpoint_suffix=suffix,
+        early_stopping_enabled=early_stop_enabled,
     )
+
+    if args.patience is not None:
+        trainer.patience = args.patience
+
+    # Resume training state if requested
+    start_epoch = 1
+    if args.resume is not None:
+        resumed_epoch = trainer.resume_from_checkpoint(args.resume)
+        start_epoch = resumed_epoch + 1
 
     # 5. Training execution
     max_epochs = 1 if args.smoke else (args.epochs if args.epochs is not None else cfg.get("training", {}).get("epochs", 50))
-    train_summary = trainer.train(max_epochs=max_epochs)
+    train_summary = trainer.train(max_epochs=max_epochs, start_epoch=start_epoch)
 
     # 6. Held-out test evaluation using best saved model
-    best_model_path = checkpoint_dir / "best_model.pt"
+    best_filename = f"best_model_{suffix}.pt" if suffix else "best_model.pt"
+    best_model_path = checkpoint_dir / best_filename
     if not best_model_path.exists():
-        best_model_path = checkpoint_dir / "last_checkpoint.pt"
+        if hasattr(trainer, "resumed_best_checkpoint") and Path(trainer.resumed_best_checkpoint).exists():
+            best_model_path = Path(trainer.resumed_best_checkpoint)
+            print(f"Resumed training did not exceed previous validation best; evaluating resumed best weights: {best_model_path}")
+        elif args.resume is not None and Path(args.resume).exists():
+            best_model_path = Path(args.resume)
+        else:
+            last_filename = f"last_checkpoint_{suffix}.pt" if suffix else "last_checkpoint.pt"
+            best_model_path = checkpoint_dir / last_filename
 
     print(f"\nLoading best checkpoint for final evaluation: {best_model_path}")
     checkpoint = torch.load(best_model_path, map_location=device, weights_only=False)
@@ -184,13 +229,17 @@ def run_baseline_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
     print(f"Background Dice:           {test_metrics.get('dice_background', 0.0):.4f} | IoU: {test_metrics.get('iou_background', 0.0):.4f}")
     print("=" * 60)
 
-    # Save test evaluation report
-    test_report_path = report_dir / "baseline_test_evaluation.json"
+    # Save test evaluation report respecting suffix
+    test_report_filename = f"baseline_test_evaluation_{suffix}.json" if suffix else "baseline_test_evaluation.json"
+    test_report_path = report_dir / test_report_filename
     report_payload = {
         "model_architecture": "LightweightUNet2D",
         "parameters": param_counts,
         "best_epoch": train_summary["best_epoch"],
         "best_val_foreground_dice": train_summary["best_val_foreground_dice"],
+        "resumed_from": getattr(trainer, "resumed_from", None),
+        "total_completed_epochs": train_summary.get("total_completed_epochs", max_epochs),
+        "target_max_epochs": max_epochs,
         "test_metrics": test_metrics,
         "config": cfg,
     }

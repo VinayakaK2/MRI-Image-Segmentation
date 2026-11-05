@@ -1,0 +1,241 @@
+{
+  "verdict": "PARTIALLY VERIFIED",
+  "reason_for_verdict": "The evaluation methodology between 3-epoch and 50-epoch checkpoints is 100% fair and consistent (identical 15-patient test cohort, 131 slices, preprocessing, z-score normalization, seed, and 3D metric formula). However, the prompt's cited 3-epoch table values (0.5794 severe contrast, 0.6121 severe blur, 0.0886 std) were transcription errors from earlier markdown text rather than true repository ground truth. Under true repository evidence (reports/robustness_results.json), the 3-epoch baseline collapsed to 0.0405 under severe contrast, meaning the 50-epoch model's improvement (+0.7753) is even more dramatic than previously claimed.",
+  "checkpoints": {
+    "3_epoch": {
+      "path": "H:\\Mini project\\checkpoints\\best_model_frozen.pt",
+      "sha256": "e7bfa884bef0f4eafce30cd6948c8d60fc4e7c8c8ca2d0bb0e83f2977fc29c02",
+      "matches_expected": true
+    },
+    "50_epoch": {
+      "path": "H:\\Mini project\\checkpoints\\50epochs\\best_model_50epochs.pt",
+      "sha256": "a4c320f19bf3f74750099badb9fda41d0c3b1abfbd68e4163620fd349d5b4e38",
+      "matches_expected": true
+    }
+  },
+  "cohort_comparison": {
+    "n_patients": 15,
+    "patients": [
+      "patient001",
+      "patient004",
+      "patient009",
+      "patient027",
+      "patient038",
+      "patient040",
+      "patient044",
+      "patient052",
+      "patient059",
+      "patient062",
+      "patient063",
+      "patient068",
+      "patient086",
+      "patient098",
+      "patient100"
+    ],
+    "cohorts_identical": true,
+    "total_slices": 131
+  },
+  "prompt_discrepancies": {
+    "clean_std": {
+      "prompt": 0.0886,
+      "repo_truth": 0.10735353263995959,
+      "note": "0.0886 was patient009 contrast Dice in table"
+    },
+    "severe_contrast_mean": {
+      "prompt": 0.5794,
+      "repo_truth": 0.040536168129919364,
+      "note": "Actual 3-epoch model collapsed to 0.0405"
+    },
+    "severe_blur_mean": {
+      "prompt": 0.6121,
+      "repo_truth": 0.6718359012680002,
+      "note": "Actual 3-epoch model reached 0.6718"
+    }
+  },
+  "clean_baseline_comparison": {
+    "3_epoch_mean": 0.7355231125289113,
+    "3_epoch_std": 0.10735353263995959,
+    "50_epoch_mean": 0.8957515246655565,
+    "50_epoch_std": 0.0372290195063126,
+    "mean_difference": 0.16022841213664546,
+    "std_difference": 0.08702704958195395,
+    "mean_relative_gain_pct": 24.87606077893215,
+    "cohort_relative_gain_pct": 21.784279706145476,
+    "paired_t_pvalue": 5.0864468545795984e-06,
+    "wilcoxon_pvalue": 6.103515625e-05,
+    "per_patient": {
+      "patient001": {
+        "3_epoch_dice": 0.7707771670302034,
+        "50_epoch_dice": 0.8932232070435614,
+        "absolute_diff": 0.12244604001335802,
+        "relative_gain_pct": 15.886049204745046
+      },
+      "patient004": {
+        "3_epoch_dice": 0.7385064532680662,
+        "50_epoch_dice": 0.9177946819586463,
+        "absolute_diff": 0.17928822869058014,
+        "relative_gain_pct": 24.277137714530078
+      },
+      "patient009": {
+        "3_epoch_dice": 0.8080332974377654,
+        "50_epoch_dice": 0.8827166002801757,
+        "absolute_diff": 0.07468330284241032,
+        "relative_gain_pct": 9.242602140187472
+      },
+      "patient027": {
+        "3_epoch_dice": 0.8139811483148792,
+        "50_epoch_dice": 0.9087971596673882,
+        "absolute_diff": 0.09481601135250894,
+        "relative_gain_pct": 11.648428412476019
+      },
+      "patient038": {
+        "3_epoch_dice": 0.39450411609974845,
+        "50_epoch_dice": 0.8025728227408758,
+        "absolute_diff": 0.4080687066411274,
+        "relative_gain_pct": 103.43839011756957
+      },
+      "patient040": {
+        "3_epoch_dice": 0.8616136007907188,
+        "50_epoch_dice": 0.9291386645084119,
+        "absolute_diff": 0.06752506371769307,
+        "relative_gain_pct": 7.83704710043157
+      },
+      "patient044": {
+        "3_epoch_dice": 0.7766156911627383,
+        "50_epoch_dice": 0.9131246422359514,
+        "absolute_diff": 0.13650895107321304,
+        "relative_gain_pct": 17.57741346544695
+      },
+      "patient052": {
+        "3_epoch_dice": 0.7134619351223547,
+        "50_epoch_dice": 0.8856910361741329,
+        "absolute_diff": 0.17222910105177824,
+        "relative_gain_pct": 24.139914489235075
+      },
+      "patient059": {
+        "3_epoch_dice": 0.7505660818152987,
+        "50_epoch_dice": 0.9360664962548664,
+        "absolute_diff": 0.18550041443956766,
+        "relative_gain_pct": 24.714734509574615
+      },
+      "patient062": {
+        "3_epoch_dice": 0.8171172133469273,
+        "50_epoch_dice": 0.9382662151503217,
+        "absolute_diff": 0.12114900180339438,
+        "relative_gain_pct": 14.826392079927652
+      },
+      "patient063": {
+        "3_epoch_dice": 0.7459192065481767,
+        "50_epoch_dice": 0.8830341294844297,
+        "absolute_diff": 0.13711492293625305,
+        "relative_gain_pct": 18.38200729148234
+      },
+      "patient068": {
+        "3_epoch_dice": 0.6647458914052237,
+        "50_epoch_dice": 0.9206612510567477,
+        "absolute_diff": 0.255915359651524,
+        "relative_gain_pct": 38.498223600982
+      },
+      "patient086": {
+        "3_epoch_dice": 0.7599781732897902,
+        "50_epoch_dice": 0.8345481343834685,
+        "absolute_diff": 0.0745699610936783,
+        "relative_gain_pct": 9.812118783738248
+      },
+      "patient098": {
+        "3_epoch_dice": 0.7198103910524791,
+        "50_epoch_dice": 0.880995061856935,
+        "absolute_diff": 0.16118467080445587,
+        "relative_gain_pct": 22.3926568451975
+      },
+      "patient100": {
+        "3_epoch_dice": 0.6972163212492992,
+        "50_epoch_dice": 0.9096427671874387,
+        "absolute_diff": 0.21242644593813953,
+        "relative_gain_pct": 30.46779592845813
+      }
+    }
+  },
+  "all_conditions": {
+    "clean_baseline": {
+      "3_epoch_mean": 0.7355231125289113,
+      "3_epoch_std": 0.10735353263995959,
+      "50_epoch_mean": 0.8957515246655565,
+      "50_epoch_std": 0.0372290195063126,
+      "absolute_delta": 0.16022841213664518,
+      "cohort_relative_pct": 21.784279706145476
+    },
+    "gaussian_noise_mild": {
+      "3_epoch_mean": 0.7354672089129966,
+      "3_epoch_std": 0.10699849262793716,
+      "50_epoch_mean": 0.8956728362502289,
+      "50_epoch_std": 0.03744496643990674,
+      "absolute_delta": 0.16020562733723231,
+      "cohort_relative_pct": 21.782837548122984
+    },
+    "gaussian_noise_moderate": {
+      "3_epoch_mean": 0.7345180683649979,
+      "3_epoch_std": 0.10565788916901765,
+      "50_epoch_mean": 0.8948000928884806,
+      "50_epoch_std": 0.03793866970497231,
+      "absolute_delta": 0.16028202452348272,
+      "cohort_relative_pct": 21.821386215898386
+    },
+    "gaussian_noise_severe": {
+      "3_epoch_mean": 0.7313112999891033,
+      "3_epoch_std": 0.10033951528446759,
+      "50_epoch_mean": 0.8913020356184805,
+      "50_epoch_std": 0.03927801004785353,
+      "absolute_delta": 0.15999073562937727,
+      "cohort_relative_pct": 21.87724100964407
+    },
+    "gaussian_blur_mild": {
+      "3_epoch_mean": 0.7287100853005465,
+      "3_epoch_std": 0.10840805046786638,
+      "50_epoch_mean": 0.8859947962272511,
+      "50_epoch_std": 0.034477508965158596,
+      "absolute_delta": 0.1572847109267046,
+      "cohort_relative_pct": 21.583989860910826
+    },
+    "gaussian_blur_moderate": {
+      "3_epoch_mean": 0.7076689375960368,
+      "3_epoch_std": 0.10840533432570713,
+      "50_epoch_mean": 0.8540010596961205,
+      "50_epoch_std": 0.042780435877538804,
+      "absolute_delta": 0.14633212210008373,
+      "cohort_relative_pct": 20.678047929753195
+    },
+    "gaussian_blur_severe": {
+      "3_epoch_mean": 0.6718359012680002,
+      "3_epoch_std": 0.1147260632849937,
+      "50_epoch_mean": 0.7775055223790486,
+      "50_epoch_std": 0.08002897976618024,
+      "absolute_delta": 0.10566962111104838,
+      "cohort_relative_pct": 15.728486809295417
+    },
+    "contrast_reduction_mild": {
+      "3_epoch_mean": 0.7309692162834031,
+      "3_epoch_std": 0.1146815399206932,
+      "50_epoch_mean": 0.8956006841530217,
+      "50_epoch_std": 0.03679780455261901,
+      "absolute_delta": 0.1646314678696187,
+      "cohort_relative_pct": 22.52235308987207
+    },
+    "contrast_reduction_moderate": {
+      "3_epoch_mean": 0.6110034883005285,
+      "3_epoch_std": 0.13476026160475132,
+      "50_epoch_mean": 0.8934645156489041,
+      "50_epoch_std": 0.034853217934497645,
+      "absolute_delta": 0.2824610273483755,
+      "cohort_relative_pct": 46.22903678242899
+    },
+    "contrast_reduction_severe": {
+      "3_epoch_mean": 0.040536168129919364,
+      "3_epoch_std": 0.04458343378790534,
+      "50_epoch_mean": 0.815799968895569,
+      "50_epoch_std": 0.06773078689068959,
+      "absolute_delta": 0.7752638007656497,
+      "cohort_relative_pct": 1912.5236462433033
+    }
+  }
+}

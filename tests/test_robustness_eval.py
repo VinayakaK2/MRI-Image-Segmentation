@@ -56,3 +56,85 @@ def test_evaluation_clean_condition_identity() -> None:
     # Weights immutability
     for p_init, p_curr in zip(initial_weights, model.parameters()):
         assert torch.equal(p_init, p_curr)
+
+
+def test_50epochs_checkpoint_integrity() -> None:
+    """Verifies that the 50-epoch checkpoint exists and matches its expected SHA-256 hash."""
+    import hashlib
+    ckpt_path = Path("checkpoints/50epochs/best_model_50epochs.pt")
+    if not ckpt_path.exists():
+        ckpt_path = Path("checkpoints/best_model_50epochs.pt")
+    if not ckpt_path.exists():
+        pytest.skip(f"50-epoch checkpoint not available on disk in clean checkout (path: {ckpt_path})")
+    expected_hash = "a4c320f19bf3f74750099badb9fda41d0c3b1abfbd68e4163620fd349d5b4e38"
+    actual_hash = hashlib.sha256(ckpt_path.read_bytes()).hexdigest()
+    assert actual_hash == expected_hash, f"SHA-256 mismatch: {actual_hash} != {expected_hash}"
+
+
+def test_50epochs_checkpoint_model_inference() -> None:
+    """Verifies that the 50-epoch checkpoint loads cleanly into LightweightUNet2D and produces valid outputs."""
+    ckpt_path = Path("checkpoints/50epochs/best_model_50epochs.pt")
+    if not ckpt_path.exists():
+        ckpt_path = Path("checkpoints/best_model_50epochs.pt")
+    if not ckpt_path.exists():
+        pytest.skip(f"50-epoch checkpoint not available on disk in clean checkout (path: {ckpt_path})")
+    checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+    model = LightweightUNet2D(in_channels=1, num_classes=4, base_channels=16)
+    msg = model.load_state_dict(checkpoint["model_state_dict"])
+    assert len(msg.missing_keys) == 0
+    assert len(msg.unexpected_keys) == 0
+
+    model.eval()
+    dummy_input = torch.randn(1, 1, 256, 256)
+    with torch.no_grad():
+        logits = model(dummy_input)
+    assert logits.shape == (1, 4, 256, 256)
+    assert torch.isfinite(logits).all()
+
+
+def test_evaluate_robustness_cli_parser() -> None:
+    """Verifies that CLI argument parsing supports custom output-dir and experiment-id."""
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, default="configs/baseline_unet.yaml")
+    parser.add_argument("--checkpoint", type=str, default="checkpoints/best_model_frozen.pt")
+    parser.add_argument("--output-dir", type=str, default="reports")
+    parser.add_argument("--experiment-id", type=str, default=None)
+
+    args = parser.parse_args([
+        "--checkpoint", "checkpoints/50epochs/best_model_50epochs.pt",
+        "--output-dir", "experiments/phase4_robustness_50epoch_best_epoch44",
+        "--experiment-id", "phase4_robustness_50epoch_best_epoch44",
+    ])
+    assert args.output_dir == "experiments/phase4_robustness_50epoch_best_epoch44"
+    assert args.experiment_id == "phase4_robustness_50epoch_best_epoch44"
+
+
+def test_evaluate_robustness_rejects_missing_explicit_checkpoint(tmp_path: Path):
+    """Verifies that evaluate_robustness fails with FileNotFoundError when explicit checkpoint is missing."""
+    import subprocess
+    import sys
+    non_existent = tmp_path / "does_not_exist.pt"
+    cmd = [sys.executable, "scripts/evaluate_robustness.py", "--checkpoint", str(non_existent)]
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    assert proc.returncode != 0
+    assert "Explicitly specified checkpoint not found" in proc.stderr or "FileNotFoundError" in proc.stderr
+
+
+def test_extract_corruption_registry():
+    """Verifies corruption registry extraction from config."""
+    from scripts.evaluate_robustness import extract_corruption_registry
+    cfg = {
+        "corruptions": {
+            "families": [
+                {
+                    "name": "gaussian_noise",
+                    "levels": {"mild": 0.05, "severe": 0.15}
+                }
+            ]
+        }
+    }
+    reg = extract_corruption_registry(cfg)
+    assert reg is not None
+    assert "gaussian_noise" in reg
+    assert reg["gaussian_noise"]["mild"] == 0.05

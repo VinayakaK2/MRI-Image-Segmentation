@@ -1,0 +1,29 @@
+{
+  "audit_name": "phase5_clahe_invariance_audit",
+  "timestamp": "2026-11-05 08:34:14",
+  "provenance": {
+    "schema_version": "1.0.0",
+    "checkpoint_path": "H:/Mini project/checkpoints/50epochs/best_model_50epochs.pt",
+    "checkpoint_sha256": "a4c320f19bf3f74750099badb9fda41d0c3b1abfbd68e4163620fd349d5b4e38",
+    "config_path": "H:/Mini project/configs/baseline_unet.yaml",
+    "config_sha256": "b5e92bc09fc0e91ef7bb170fd6a478de0830dd1a73b44d2e5e6c244a764584b6",
+    "manifest_path": "H:/Mini project/data/processed/acdc_slice_manifest.json",
+    "manifest_sha256": "c8669cf38313b4010598c673be1c4c590575aac8767758f8bd51c40ff7a5fee9",
+    "created_at_utc": "2026-11-05T03:02:23Z"
+  },
+  "environment": {
+    "python": "3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)]",
+    "torch": "2.4.1+cpu",
+    "numpy": "1.24.4",
+    "device": "cpu",
+    "seed": 42
+  },
+  "files_generated": [
+    "tensor_comparison_results.csv",
+    "patient_level_prediction_comparison.csv",
+    "preprocessing_stage_analysis.json",
+    "clahe_invariance_audit.md",
+    "scientific_claims_review.md",
+    "reproducibility_manifest.json"
+  ]
+}

@@ -6,6 +6,7 @@ defined comparison families, separating raw from adjusted p-values and verifying
 against published CSV artifacts.
 """
 
+import argparse
 import csv
 import json
 from pathlib import Path
@@ -62,8 +63,18 @@ CONDITION_FAMILY_MAP = {
 
 
 def main():
-    json_path = PROJECT_ROOT / "reports" / "mitigation_results.json"
-    csv_path = PROJECT_ROOT / "reports" / "mitigation_results.csv"
+    parser = argparse.ArgumentParser(description="Independent Phase 5 verification and statistical audit script.")
+    parser.add_argument("--results-json", type=str, default=str(PROJECT_ROOT / "reports" / "mitigation_results.json"), help="Path to results JSON")
+    parser.add_argument("--results-csv", type=str, default=str(PROJECT_ROOT / "reports" / "mitigation_results.csv"), help="Path to results CSV")
+    parser.add_argument("--checkpoint", type=str, default=None, help="Path to checkpoint")
+    parser.add_argument("--config", type=str, default=None, help="Optional path to model config YAML")
+    parser.add_argument("--manifest", type=str, default=None, help="Optional path to dataset manifest JSON")
+    parser.add_argument("--output-json", type=str, default=None, help="Optional path for audit summary JSON")
+    parser.add_argument("--output-md", type=str, default=None, help="Optional path for audit summary Markdown")
+    args = parser.parse_args()
+
+    json_path = Path(args.results_json)
+    csv_path = Path(args.results_csv)
 
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -84,11 +95,32 @@ def main():
     print(" AUDIT 0: CRYPTOGRAPHIC CACHE PROVENANCE VERIFICATION")
     print("=" * 80)
 
-    ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
-    if not ckpt_path.exists():
+    # Resolve provenance artifacts (checkpoint, config, manifest) using CLI flags, recorded results metadata, or defaults
+    prov = data.get("provenance", {}) if isinstance(data.get("provenance"), dict) else {}
+    if args.checkpoint:
+        ckpt_path = Path(args.checkpoint)
+    elif "checkpoint_path" in prov and Path(prov["checkpoint_path"]).exists():
+        ckpt_path = Path(prov["checkpoint_path"])
+    elif (PROJECT_ROOT / "checkpoints" / "50epochs" / "best_model_50epochs.pt").exists() and ("50epoch" in str(json_path) or "phase5" in str(json_path)):
+        ckpt_path = PROJECT_ROOT / "checkpoints" / "50epochs" / "best_model_50epochs.pt"
+    elif (PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt").exists():
+        ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model_frozen.pt"
+    else:
         ckpt_path = PROJECT_ROOT / "checkpoints" / "best_model.pt"
-    cfg_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
-    man_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
+
+    if args.config:
+        cfg_path = Path(args.config)
+    elif "config_path" in prov and Path(prov["config_path"]).exists():
+        cfg_path = Path(prov["config_path"])
+    else:
+        cfg_path = PROJECT_ROOT / "configs" / "baseline_unet.yaml"
+
+    if args.manifest:
+        man_path = Path(args.manifest)
+    elif "manifest_path" in prov and Path(prov["manifest_path"]).exists():
+        man_path = Path(prov["manifest_path"])
+    else:
+        man_path = PROJECT_ROOT / "data" / "processed" / "acdc_slice_manifest.json"
 
     expected_prov = build_cache_provenance(ckpt_path, cfg_path, man_path, CACHE_SCHEMA_VERSION)
     is_prov_valid, prov_reason = validate_cache_provenance(data, expected_prov)
@@ -433,13 +465,52 @@ def main():
     if not is_prov_valid:
         discrepancies.append(f"Mitigation results cache provenance invalid: {prov_reason}")
 
+    audit_summary = {
+        "status": "FAIL" if discrepancies else "PASS",
+        "discrepancies_count": len(discrepancies),
+        "discrepancies": discrepancies,
+        "results_json": str(json_path),
+        "results_csv": str(csv_path),
+        "checkpoint_evaluated": str(ckpt_path),
+        "provenance_valid": is_prov_valid,
+        "total_comparisons_checked": 19,
+        "contrast_invariance_max_diff": float(diff_sev_clean),
+    }
+
+    if args.output_json:
+        out_j = Path(args.output_json)
+        out_j.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_j, "w", encoding="utf-8") as f:
+            json.dump(audit_summary, f, indent=2)
+        print(f"Audit summary JSON written to: {out_j}")
+
+    if args.output_md:
+        out_m = Path(args.output_md)
+        out_m.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_m, "w", encoding="utf-8") as f:
+            f.write("# Phase 5 Independent Statistical Audit Report\n\n")
+            f.write(f"- **Status**: {audit_summary['status']}\n")
+            f.write(f"- **Discrepancies**: {audit_summary['discrepancies_count']}\n")
+            f.write(f"- **Evaluated Checkpoint**: `{ckpt_path}`\n")
+            f.write(f"- **Results JSON**: `{json_path}`\n")
+            f.write(f"- **Results CSV**: `{csv_path}`\n")
+            f.write(f"- **Cryptographic Provenance Valid**: {is_prov_valid}\n")
+            f.write(f"- **Contrast Invariance Max Diff**: `{diff_sev_clean:.2e}`\n\n")
+            if discrepancies:
+                f.write("### Detected Discrepancies\n\n")
+                for d in discrepancies:
+                    f.write(f"- {d}\n")
+            else:
+                f.write("### Verification Result\n\nAll 4 pre-registered families (19 hypothesis comparisons) perfectly match between JSON per-patient arrays and the published CSV artifact with zero discrepancies.\n")
+        print(f"Audit summary Markdown written to: {out_m}")
+
     if discrepancies:
         print(f"\nDISCREPANCIES DETECTED ({len(discrepancies)}):")
         for d in discrepancies:
             print(f"  - {d}")
         sys.exit(1)
     else:
-        print("ALL 4 FAMILIES (19 HYPOTHESIS COMPARISONS) PERFECTLY MATCH reports/mitigation_results.csv!")
+        print(f"ALL 4 FAMILIES (19 HYPOTHESIS COMPARISONS) PERFECTLY MATCH {csv_path}!")
 
 
 if __name__ == "__main__":

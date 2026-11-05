@@ -1,0 +1,74 @@
+{
+  "experiment_id": "phase5_validation_locked_mitigation",
+  "timestamp": "2026-11-05 00:45:47",
+  "git_commit": "66630390bf60f0d8ca54a911a6e4ad67b088e0cc",
+  "checkpoint": {
+    "path": "checkpoints\\50epochs\\best_model_50epochs.pt",
+    "sha256": "a4c320f19bf3f74750099badb9fda41d0c3b1abfbd68e4163620fd349d5b4e38"
+  },
+  "config": {
+    "path": "H:\\Mini project\\configs\\baseline_unet.yaml",
+    "sha256": "b5e92bc09fc0e91ef7bb170fd6a478de0830dd1a73b44d2e5e6c244a764584b6"
+  },
+  "manifest": {
+    "path": "H:\\Mini project\\data\\processed\\acdc_slice_manifest.json",
+    "sha256": "c8669cf38313b4010598c673be1c4c590575aac8767758f8bd51c40ff7a5fee9"
+  },
+  "environment": {
+    "python_version": "3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)]",
+    "torch_version": "2.4.1+cpu",
+    "numpy_version": "1.24.4",
+    "scipy_version": "1.10.x",
+    "device": "cpu",
+    "base_seed": 42
+  },
+  "test_cohort": {
+    "num_patients": 15,
+    "patient_ids": [
+      "patient001",
+      "patient004",
+      "patient009",
+      "patient027",
+      "patient038",
+      "patient040",
+      "patient044",
+      "patient052",
+      "patient059",
+      "patient062",
+      "patient063",
+      "patient068",
+      "patient086",
+      "patient098",
+      "patient100"
+    ],
+    "total_slices": 131
+  },
+  "locked_mitigation_hyperparameters": {
+    "clahe_clip_limit": 0.01,
+    "clahe_grid_size": [
+      16,
+      16
+    ],
+    "clahe_re_standardize": true,
+    "median_filter_size": 3,
+    "median_re_standardize": false,
+    "morphology_min_area": {
+      "RV": 30,
+      "MYO": 50,
+      "LV": 30
+    },
+    "myo_max_hole_size": 16
+  },
+  "statistical_protocol": {
+    "primary_test": "two-tailed paired Student's t-test",
+    "sensitivity_test": "two-tailed Wilcoxon signed-rank test",
+    "fwer_correction": "Holm-Bonferroni step-down with monotonicity enforcement",
+    "alpha": 0.05,
+    "comparison_families_m": {
+      "Family 1": 10,
+      "Family 2": 3,
+      "Family 3": 3,
+      "Family 4": 3
+    }
+  }
+}

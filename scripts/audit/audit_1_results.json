@@ -1,0 +1,33 @@
+{
+  "verdict": "VERIFIED",
+  "slice_fg_dice_reported": 0.8296715765244638,
+  "slice_fg_dice_recalculated": 0.8296715765244638,
+  "patient_3d_mean_reported": 0.8957515246655565,
+  "patient_3d_mean_recalculated": 0.8957515246655565,
+  "patient_3d_std_reported": 0.0372290195063126,
+  "patient_3d_std_recalculated": 0.0372290195063126,
+  "n_patients": 15,
+  "n_slices": 131,
+  "patient_slice_counts": {
+    "patient001": 10,
+    "patient004": 10,
+    "patient009": 10,
+    "patient027": 10,
+    "patient038": 8,
+    "patient040": 10,
+    "patient044": 9,
+    "patient052": 8,
+    "patient059": 9,
+    "patient062": 10,
+    "patient063": 8,
+    "patient068": 7,
+    "patient086": 7,
+    "patient098": 7,
+    "patient100": 8
+  },
+  "mathematical_reasons": [
+    "Slice-level macro Dice assigns equal weight (1/131) to small apical/basal slices where minor boundary misalignments drastically reduce Dice.",
+    "Patient-level 3D Dice pools intersection and cardinality over the full 3D cardiac volume, naturally weighting each slice proportional to its voxel volume.",
+    "Empty/absent class handling on individual 2D slices penalizes slice averages if false positive pixels exist, whereas in 3D pooling the class is present across the full volume."
+  ]
+}

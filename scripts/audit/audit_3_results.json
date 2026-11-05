@@ -1,0 +1,347 @@
+{
+  "verdict": "VERIFIED",
+  "n_patients": 15,
+  "m_hypotheses": 9,
+  "family_wise_error_rate_alpha": 0.05,
+  "is_monotonic_w": true,
+  "reproduced_stats": {
+    "gaussian_noise_mild": {
+      "n_patients": 15,
+      "mean_diff": -7.868841532800985e-05,
+      "std_diff": 0.0005945447928611279,
+      "mean_rel_pct": -0.009833943351119142,
+      "cohort_rel_pct": -0.008784625329779281,
+      "t_stat": -0.5125920296740691,
+      "t_pval_raw": 0.616228291884027,
+      "w_stat": 51.0,
+      "w_pval_raw": 0.638671875,
+      "t_pval_holm": 1.0,
+      "w_pval_holm": 1.0,
+      "significant_t": false,
+      "significant_w": false
+    },
+    "gaussian_noise_moderate": {
+      "n_patients": 15,
+      "mean_diff": -0.0009514317770760395,
+      "std_diff": 0.002032073840659984,
+      "mean_rel_pct": -0.10975034666037199,
+      "cohort_rel_pct": -0.1062160376931693,
+      "t_stat": -1.8133590197053273,
+      "t_pval_raw": 0.09126583467605635,
+      "w_stat": 31.0,
+      "w_pval_raw": 0.10699462890625,
+      "t_pval_holm": 0.3650633387042254,
+      "w_pval_holm": 0.427978515625,
+      "significant_t": false,
+      "significant_w": false
+    },
+    "gaussian_noise_severe": {
+      "n_patients": 15,
+      "mean_diff": -0.0044494890470761165,
+      "std_diff": 0.006153353249285773,
+      "mean_rel_pct": -0.5057582528107729,
+      "cohort_rel_pct": -0.49673251170153154,
+      "t_stat": -2.8005538249341266,
+      "t_pval_raw": 0.014164873463141494,
+      "w_stat": 12.0,
+      "w_pval_raw": 0.0042724609375,
+      "t_pval_holm": 0.07408744568145778,
+      "w_pval_holm": 0.025634765625,
+      "significant_t": false,
+      "significant_w": true
+    },
+    "gaussian_blur_mild": {
+      "n_patients": 15,
+      "mean_diff": -0.009756728438305773,
+      "std_diff": 0.013165525809633774,
+      "mean_rel_pct": -1.0679397584203614,
+      "cohort_rel_pct": -1.0892226437402128,
+      "t_stat": -2.8701965497933806,
+      "t_pval_raw": 0.012347907613576296,
+      "w_stat": 15.0,
+      "w_pval_raw": 0.00836181640625,
+      "t_pval_holm": 0.07408744568145778,
+      "w_pval_holm": 0.04180908203125,
+      "significant_t": false,
+      "significant_w": true
+    },
+    "gaussian_blur_moderate": {
+      "n_patients": 15,
+      "mean_diff": -0.04175046496943625,
+      "std_diff": 0.03462232881526104,
+      "mean_rel_pct": -4.622446695313385,
+      "cohort_rel_pct": -4.6609426632038655,
+      "t_stat": -4.670363348053241,
+      "t_pval_raw": 0.00036087891658867857,
+      "w_stat": 1.0,
+      "w_pval_raw": 0.0001220703125,
+      "t_pval_holm": 0.0028870313327094286,
+      "w_pval_holm": 0.0009765625,
+      "significant_t": true,
+      "significant_w": true
+    },
+    "gaussian_blur_severe": {
+      "n_patients": 15,
+      "mean_diff": -0.11824600228650817,
+      "std_diff": 0.07889739818113399,
+      "mean_rel_pct": -13.150248310612108,
+      "cohort_rel_pct": -13.200759254153324,
+      "t_stat": -5.804561470580397,
+      "t_pval_raw": 4.566704013427379e-05,
+      "w_stat": 0.0,
+      "w_pval_raw": 6.103515625e-05,
+      "t_pval_holm": 0.0004110033612084641,
+      "w_pval_holm": 0.00054931640625,
+      "significant_t": true,
+      "significant_w": true
+    },
+    "contrast_reduction_mild": {
+      "n_patients": 15,
+      "mean_diff": -0.00015084051253508868,
+      "std_diff": 0.0031427397438651434,
+      "mean_rel_pct": -0.014254674292467661,
+      "cohort_rel_pct": -0.016839548511078068,
+      "t_stat": -0.1858896506216259,
+      "t_pval_raw": 0.8551977477729107,
+      "w_stat": 59.0,
+      "w_pval_raw": 0.97796630859375,
+      "t_pval_holm": 1.0,
+      "w_pval_holm": 1.0,
+      "significant_t": false,
+      "significant_w": false
+    },
+    "contrast_reduction_moderate": {
+      "n_patients": 15,
+      "mean_diff": -0.0022870090166527894,
+      "std_diff": 0.007979512458619983,
+      "mean_rel_pct": -0.2407955365289478,
+      "cohort_rel_pct": -0.2553173456786865,
+      "t_stat": -1.1100362183849917,
+      "t_pval_raw": 0.2856862004928888,
+      "w_stat": 38.0,
+      "w_pval_raw": 0.22930908203125,
+      "t_pval_holm": 0.8570586014786663,
+      "w_pval_holm": 0.68792724609375,
+      "significant_t": false,
+      "significant_w": false
+    },
+    "contrast_reduction_severe": {
+      "n_patients": 15,
+      "mean_diff": -0.07995155576998775,
+      "std_diff": 0.0689347679158373,
+      "mean_rel_pct": -8.852738472686235,
+      "cohort_rel_pct": -8.925639931211805,
+      "t_stat": -4.491942939136171,
+      "t_pval_raw": 0.0005069514355541806,
+      "w_stat": 2.0,
+      "w_pval_raw": 0.00018310546875,
+      "t_pval_holm": 0.003548660048879264,
+      "w_pval_holm": 0.00128173828125,
+      "significant_t": true,
+      "significant_w": true
+    }
+  },
+  "wilcoxon_audit_trail": [
+    {
+      "rank": 1,
+      "orig_idx": 5,
+      "raw_p": 6.103515625e-05,
+      "multiplier": 9,
+      "raw_times_mult": 0.00054931640625,
+      "running_max": 0.00054931640625,
+      "holm_adjusted": 0.00054931640625
+    },
+    {
+      "rank": 2,
+      "orig_idx": 4,
+      "raw_p": 0.0001220703125,
+      "multiplier": 8,
+      "raw_times_mult": 0.0009765625,
+      "running_max": 0.0009765625,
+      "holm_adjusted": 0.0009765625
+    },
+    {
+      "rank": 3,
+      "orig_idx": 8,
+      "raw_p": 0.00018310546875,
+      "multiplier": 7,
+      "raw_times_mult": 0.00128173828125,
+      "running_max": 0.00128173828125,
+      "holm_adjusted": 0.00128173828125
+    },
+    {
+      "rank": 4,
+      "orig_idx": 2,
+      "raw_p": 0.0042724609375,
+      "multiplier": 6,
+      "raw_times_mult": 0.025634765625,
+      "running_max": 0.025634765625,
+      "holm_adjusted": 0.025634765625
+    },
+    {
+      "rank": 5,
+      "orig_idx": 3,
+      "raw_p": 0.00836181640625,
+      "multiplier": 5,
+      "raw_times_mult": 0.04180908203125,
+      "running_max": 0.04180908203125,
+      "holm_adjusted": 0.04180908203125
+    },
+    {
+      "rank": 6,
+      "orig_idx": 1,
+      "raw_p": 0.10699462890625,
+      "multiplier": 4,
+      "raw_times_mult": 0.427978515625,
+      "running_max": 0.427978515625,
+      "holm_adjusted": 0.427978515625
+    },
+    {
+      "rank": 7,
+      "orig_idx": 7,
+      "raw_p": 0.22930908203125,
+      "multiplier": 3,
+      "raw_times_mult": 0.68792724609375,
+      "running_max": 0.68792724609375,
+      "holm_adjusted": 0.68792724609375
+    },
+    {
+      "rank": 8,
+      "orig_idx": 0,
+      "raw_p": 0.638671875,
+      "multiplier": 2,
+      "raw_times_mult": 1.27734375,
+      "running_max": 1.27734375,
+      "holm_adjusted": 1.0
+    },
+    {
+      "rank": 9,
+      "orig_idx": 6,
+      "raw_p": 0.97796630859375,
+      "multiplier": 1,
+      "raw_times_mult": 0.97796630859375,
+      "running_max": 1.27734375,
+      "holm_adjusted": 1.0
+    }
+  ],
+  "ttest_audit_trail": [
+    {
+      "rank": 1,
+      "orig_idx": 5,
+      "raw_p": 4.566704013427379e-05,
+      "multiplier": 9,
+      "raw_times_mult": 0.0004110033612084641,
+      "running_max": 0.0004110033612084641,
+      "holm_adjusted": 0.0004110033612084641
+    },
+    {
+      "rank": 2,
+      "orig_idx": 4,
+      "raw_p": 0.00036087891658867857,
+      "multiplier": 8,
+      "raw_times_mult": 0.0028870313327094286,
+      "running_max": 0.0028870313327094286,
+      "holm_adjusted": 0.0028870313327094286
+    },
+    {
+      "rank": 3,
+      "orig_idx": 8,
+      "raw_p": 0.0005069514355541806,
+      "multiplier": 7,
+      "raw_times_mult": 0.003548660048879264,
+      "running_max": 0.003548660048879264,
+      "holm_adjusted": 0.003548660048879264
+    },
+    {
+      "rank": 4,
+      "orig_idx": 3,
+      "raw_p": 0.012347907613576296,
+      "multiplier": 6,
+      "raw_times_mult": 0.07408744568145778,
+      "running_max": 0.07408744568145778,
+      "holm_adjusted": 0.07408744568145778
+    },
+    {
+      "rank": 5,
+      "orig_idx": 2,
+      "raw_p": 0.014164873463141494,
+      "multiplier": 5,
+      "raw_times_mult": 0.07082436731570747,
+      "running_max": 0.07408744568145778,
+      "holm_adjusted": 0.07408744568145778
+    },
+    {
+      "rank": 6,
+      "orig_idx": 1,
+      "raw_p": 0.09126583467605635,
+      "multiplier": 4,
+      "raw_times_mult": 0.3650633387042254,
+      "running_max": 0.3650633387042254,
+      "holm_adjusted": 0.3650633387042254
+    },
+    {
+      "rank": 7,
+      "orig_idx": 7,
+      "raw_p": 0.2856862004928888,
+      "multiplier": 3,
+      "raw_times_mult": 0.8570586014786663,
+      "running_max": 0.8570586014786663,
+      "holm_adjusted": 0.8570586014786663
+    },
+    {
+      "rank": 8,
+      "orig_idx": 0,
+      "raw_p": 0.616228291884027,
+      "multiplier": 2,
+      "raw_times_mult": 1.232456583768054,
+      "running_max": 1.232456583768054,
+      "holm_adjusted": 1.0
+    },
+    {
+      "rank": 9,
+      "orig_idx": 6,
+      "raw_p": 0.8551977477729107,
+      "multiplier": 1,
+      "raw_times_mult": 0.8551977477729107,
+      "running_max": 1.232456583768054,
+      "holm_adjusted": 1.0
+    }
+  ],
+  "claims_verification": [
+    {
+      "claim": "Severe noise: Wilcoxon Holm p = 0.0256",
+      "condition": "gaussian_noise_severe",
+      "expected": 0.025635,
+      "actual": 0.025634765625,
+      "verified": true
+    },
+    {
+      "claim": "Mild blur: Wilcoxon Holm p = 0.0418",
+      "condition": "gaussian_blur_mild",
+      "expected": 0.041809,
+      "actual": 0.04180908203125,
+      "verified": true
+    },
+    {
+      "claim": "Moderate blur: Wilcoxon Holm p = 0.0010",
+      "condition": "gaussian_blur_moderate",
+      "expected": 0.00097656,
+      "actual": 0.0009765625,
+      "verified": true
+    },
+    {
+      "claim": "Severe blur: Wilcoxon Holm p = 0.0005",
+      "condition": "gaussian_blur_severe",
+      "expected": 0.00054932,
+      "actual": 0.00054931640625,
+      "verified": true
+    },
+    {
+      "claim": "Severe contrast: Wilcoxon Holm p = 0.0013",
+      "condition": "contrast_reduction_severe",
+      "expected": 0.0012817,
+      "actual": 0.00128173828125,
+      "verified": true
+    }
+  ]
+}
