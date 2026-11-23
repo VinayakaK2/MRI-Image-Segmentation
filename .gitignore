@@ -47,3 +47,9 @@ reports/*.pdf
 *.swo
 .DS_Store
 Thumbs.db
+
+# Build and packaging
+*.egg-info/
+build/
+dist/
+uv.lock

@@ -1,0 +1,150 @@
+{
+  "manifest_metadata": {
+    "project_name": "ACDC Cardiac MRI Semantic Segmentation Robustness",
+    "repository": "VinayakaK2/MRI-Image-Segmentation",
+    "git_branch": "phase5-mitigation-audit",
+    "head_commit": "d3e4f69",
+    "audit_timestamp_utc": "2026-11-06T08:24:00Z",
+    "auditor": "Senior Medical Imaging Research Scientist, ML Engineer & Statistical Auditor"
+  },
+  "environment": {
+    "os": "Windows 11 (AMD64)",
+    "python_version": "3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)]",
+    "torch_version": "2.4.1+cpu",
+    "numpy_version": "1.24.4",
+    "scipy_version": "1.10.1",
+    "scikit_image_version": "0.21.0",
+    "pytest_version": "8.3.5",
+    "random_seed": 42
+  },
+  "model_checkpoints": {
+    "frozen_3epoch_baseline": {
+      "path": "checkpoints/best_model_frozen.pt",
+      "sha256": "e7bfa884bef0f4eafce30cd6948c8d60fc4e7c8c8ca2d0bb0e83f2977fc29c02",
+      "architecture": "LightweightUNet2D",
+      "parameters": 1963860,
+      "epoch": 3,
+      "hardware": "Local CPU",
+      "status": "Verified Intact & Preserved"
+    },
+    "completed_50epoch_baseline": {
+      "path": "checkpoints/50epochs/best_model_50epochs.pt",
+      "sha256": "a4c320f19bf3f74750099badb9fda41d0c3b1abfbd68e4163620fd349d5b4e38",
+      "architecture": "LightweightUNet2D",
+      "parameters": 1963860,
+      "best_validation_epoch": 44,
+      "best_validation_dice": 0.8871069795435059,
+      "hardware": "Google Colab (Tesla T4 GPU)",
+      "training_wall_time_seconds": 819.9,
+      "status": "Verified Optimal Checkpoint"
+    }
+  },
+  "configuration_and_splits": {
+    "config_file": {
+      "path": "configs/baseline_unet.yaml",
+      "sha256": "b5e92bc09fc0e91ef7bb170fd6a478de0830dd1a73b44d2e5e6c244a764584b6"
+    },
+    "patient_splits_file": {
+      "path": "data/splits/acdc_patient_splits.json",
+      "sha256": "5b9a1c511a500c28340d85a11c83fafe933d79b9a674516dfab1b046e7f80dbd",
+      "ratios": {
+        "train": 0.70,
+        "val": 0.15,
+        "test": 0.15
+      },
+      "cohort_counts": {
+        "train_patients": 70,
+        "val_patients": 15,
+        "test_patients": 15
+      }
+    },
+    "slice_manifest_file": {
+      "path": "data/processed/acdc_slice_manifest.json",
+      "sha256": "c8669cf38313b4010598c673be1c4c590575aac8767758f8bd51c40ff7a5fee9",
+      "test_slice_count": 131,
+      "phase_restriction": "End-Diastole (frame01.nii.gz only)"
+    }
+  },
+  "held_out_test_cohort": {
+    "patient_count": 15,
+    "slice_count": 131,
+    "patient_ids": [
+      "patient001",
+      "patient004",
+      "patient009",
+      "patient027",
+      "patient038",
+      "patient040",
+      "patient044",
+      "patient052",
+      "patient059",
+      "patient062",
+      "patient063",
+      "patient068",
+      "patient086",
+      "patient098",
+      "patient100"
+    ]
+  },
+  "independently_reproduced_ground_truth_metrics": {
+    "clean_baseline": {
+      "slice_macro_foreground_dice": 0.8296715765244638,
+      "patient_3d_macro_foreground_dice_mean": 0.8957515246655565,
+      "patient_3d_macro_foreground_dice_std": 0.0372290195063126,
+      "patient_3d_rv_dice_mean": 0.9019251105177748,
+      "patient_3d_myo_dice_mean": 0.8433777885856151,
+      "patient_3d_lv_dice_mean": 0.9419516748932805
+    },
+    "severe_gaussian_noise": {
+      "parameter": 0.10,
+      "patient_3d_macro_dice_mean": 0.8913382767277636,
+      "patient_3d_macro_dice_std": 0.03927237937517946,
+      "mean_paired_delta": -0.004413247937792878
+    },
+    "severe_gaussian_blur": {
+      "parameter": 2.50,
+      "patient_3d_macro_dice_mean": 0.7775116544831637,
+      "patient_3d_macro_dice_std": 0.07999805492476569,
+      "mean_paired_delta": -0.11823987018239277
+    },
+    "severe_contrast_reduction": {
+      "parameter": 0.25,
+      "patient_3d_macro_dice_mean": 0.8157790186107383,
+      "patient_3d_macro_dice_std": 0.06771542456578013,
+      "mean_paired_delta": -0.07997250605481816
+    },
+    "severe_contrast_plus_zscore_alone": {
+      "patient_3d_macro_dice_mean": 0.8957515246655565,
+      "patient_3d_macro_dice_std": 0.0372290195063126,
+      "delta_vs_clean": 0.0,
+      "recovery_share_percent": 108.43
+    },
+    "severe_contrast_plus_clahe": {
+      "patient_3d_macro_dice_mean": 0.8895701886862516,
+      "patient_3d_macro_dice_std": 0.04288079085527964,
+      "delta_vs_unmitigated": 0.07379117007551336,
+      "delta_vs_zscore_alone": -0.006181335979304892
+    },
+    "severe_contrast_plus_combined": {
+      "patient_3d_macro_dice_mean": 0.8920556276228302,
+      "patient_3d_macro_dice_std": 0.03713837775535515,
+      "delta_vs_unmitigated": 0.0762766090120919
+    },
+    "clahe_tensor_invariance": {
+      "max_abs_diff_clean_unit_vs_corrupt_unit": 2.384185791015625e-07,
+      "mean_abs_diff_clean_unit_vs_corrupt_unit": 3.123284918230588e-10,
+      "max_abs_diff_clean_clahe_vs_corrupt_clahe": 0.0,
+      "mean_abs_diff_clean_clahe_vs_corrupt_clahe": 0.0,
+      "pixel_agreement_percentage": 100.0,
+      "evaluated_voxels": 8585216
+    }
+  },
+  "reproduction_commands": {
+    "run_unit_and_integration_tests": "python -m pytest tests/",
+    "reproduce_audit_1_slice_vs_patient": "python scripts/audit/audit_1_slice_vs_patient.py",
+    "reproduce_audit_2_checkpoint_comparison": "python scripts/audit/audit_2_model_comparison.py",
+    "reproduce_audit_3_statistical_tests": "python scripts/audit/audit_3_statistical_reproducibility.py",
+    "reproduce_audit_clahe_invariance": "python scripts/audit/audit_clahe_invariance.py",
+    "reproduce_phase5_metrics_audit": "python scripts/audit_phase5_metrics.py --results-json experiments/phase5_validation_locked_mitigation/mitigation_results.json --results-csv experiments/phase5_validation_locked_mitigation/mitigation_results.csv --checkpoint checkpoints/50epochs/best_model_50epochs.pt"
+  }
+}
