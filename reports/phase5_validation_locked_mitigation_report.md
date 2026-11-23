@@ -1,5 +1,11 @@
 # Phase 5 — Validation-Locked Mitigation Experiment: Final Scientific Report
 
+> [!NOTE] Post-Audit Notice & Supersession Status
+> **Audit Status**: Rigorously audited on November 6, 2026.  
+> **Original Pre-Audit Archive**: [`reports/historical/phase5_validation_locked_mitigation_report_v1.md`](file:///H:/Mini%20project/reports/historical/phase5_validation_locked_mitigation_report_v1.md)  
+> **Canonical Authoritative Report**: [`reports/canonical_final_research_report.md`](file:///H:/Mini%20project/reports/canonical_final_research_report.md)  
+> **Forensic Audit Finding**: Forensic investigation confirmed that the apparent +0.0738 recovery under severe contrast was **100% produced by linear dynamic range re-normalization** (`to_unit_interval` cancelling alpha), NOT by CLAHE. See Section 3 and the CLAHE Forensic Findings report.
+
 **Experiment Identifier**: `phase5_validation_locked_mitigation`  
 **Date**: November 5, 2026  
 **Auditor / Investigator**: Senior Medical Imaging ML Research Engineer & Statistical Validation Specialist  
