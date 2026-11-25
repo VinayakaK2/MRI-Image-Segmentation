@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CardioAI Research — Cardiac MRI Segmentation Workstation</title>
+    <script>
+      // Apply persisted or system theme synchronously before mount to prevent theme flicker
+      (function () {
+        try {
+          var key = "cardioai-theme-mode";
+          var stored = window.localStorage.getItem(key);
+          var mode = stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+          var prefersDark =
+            window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var isDark = mode === "dark" || (mode === "system" && prefersDark);
+          if (isDark) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (_e) {
+          // Ignore storage access errors in restricted environments
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-canvas text-ink antialiased selection:bg-accent-subtle selection:text-ink">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

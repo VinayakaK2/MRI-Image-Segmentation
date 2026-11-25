@@ -1,0 +1,85 @@
+/* Centralized design tokens for CardioAI Research Light & Dark themes */
+
+:root {
+  color-scheme: light;
+
+  /* Core Light Surfaces & Text */
+  --bg-main: #f4f7f9;
+  --bg-surface: #ffffff;
+  --bg-surface-secondary: #edf2f5;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-subtle: #dbe3ea;
+
+  /* Restrained Teal Accent */
+  --accent: #0f766e;
+  --accent-hover: #0d5e58;
+  --accent-subtle: rgba(15, 118, 110, 0.1);
+
+  /* Accessible Status Tokens */
+  --status-success: #15803d;
+  --status-success-bg: rgba(21, 128, 61, 0.1);
+  --status-warning: #b45309;
+  --status-warning-bg: rgba(180, 83, 9, 0.1);
+  --status-error: #b91c1c;
+  --status-error-bg: rgba(185, 28, 28, 0.1);
+
+  /* Chart Tokens (Light) */
+  --chart-grid: #e2e8f0;
+  --chart-axis: #64748b;
+  --chart-baseline: #0f766e;
+  --chart-noise: #0284c7;
+  --chart-blur: #d97706;
+  --chart-contrast: #dc2626;
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: #cbd5e1;
+
+  /* Theme-Invariant Medical Imaging Tokens (never change with light/dark mode) */
+  --mri-canvas-bg: #05070a;
+  --class-bg-color: #111827;
+  --class-rv-color: #ef4444;
+  --class-myo-color: #22c55e;
+  --class-lv-color: #3b82f6;
+}
+
+:root.dark {
+  color-scheme: dark;
+
+  /* Core Dark Surfaces & Text */
+  --bg-main: #0c1117;
+  --bg-surface: #141b24;
+  --bg-surface-secondary: #1c2633;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border-subtle: #263242;
+
+  /* Bright Teal Accent */
+  --accent: #2dd4bf;
+  --accent-hover: #5eead4;
+  --accent-subtle: rgba(45, 212, 191, 0.14);
+
+  /* Accessible Status Tokens */
+  --status-success: #4ade80;
+  --status-success-bg: rgba(74, 222, 128, 0.14);
+  --status-warning: #fbbf24;
+  --status-warning-bg: rgba(251, 191, 36, 0.14);
+  --status-error: #f87171;
+  --status-error-bg: rgba(248, 113, 113, 0.14);
+
+  /* Chart Tokens (Dark) */
+  --chart-grid: #243040;
+  --chart-axis: #94a3b8;
+  --chart-baseline: #2dd4bf;
+  --chart-noise: #38bdf8;
+  --chart-blur: #fbbf24;
+  --chart-contrast: #f87171;
+  --chart-tooltip-bg: #141b24;
+  --chart-tooltip-border: #334155;
+
+  /* Theme-Invariant Medical Imaging Tokens (identical in dark mode) */
+  --mri-canvas-bg: #05070a;
+  --class-bg-color: #111827;
+  --class-rv-color: #ef4444;
+  --class-myo-color: #22c55e;
+  --class-lv-color: #3b82f6;
+}
