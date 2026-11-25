@@ -53,3 +53,9 @@ Thumbs.db
 build/
 dist/
 uv.lock
+
+# Frontend dependencies, local env, and TypeScript build cache
+node_modules/
+.env.local
+.env*.local
+*.tsbuildinfo
